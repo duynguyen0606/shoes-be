@@ -7,7 +7,7 @@ export interface IProductDocument extends IProduct, Document {
 interface IProductSchema extends Model<IProductDocument> {
 
 }
-const productTable = "Product";
+export const productTable = "Product";
 
 const ProductSchema = new Schema<IProductDocument, IProductSchema>({
     name: {

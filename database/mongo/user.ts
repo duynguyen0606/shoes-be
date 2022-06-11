@@ -3,7 +3,7 @@ import { model, Model, Schema } from 'mongoose';
 import { any } from 'webidl-conversions';
 import { IUser, UserInfor } from './../../models/user';
 
-const tableUser = 'User';
+export const userTable = 'User';
 export interface IUserDocument extends IUser, Document {
     _id: any;
 }
@@ -41,7 +41,7 @@ const UserSchema = new Schema<IUserDocument, IUserSchema>({
     }
 })
 
-const UserModel = model(tableUser, UserSchema);
+const UserModel = model(userTable, UserSchema);
 
 export {UserModel};
 
