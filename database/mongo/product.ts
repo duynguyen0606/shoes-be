@@ -31,6 +31,11 @@ const ProductSchema = new Schema<IProductDocument, IProductSchema>({
         type: "number",
         required: true,
         default: 0
+    },
+    linkImg: {
+        type: "string",
+        required: true,
+        trim: true,
     }
 });
 
