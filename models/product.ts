@@ -5,7 +5,7 @@ export interface IProduct {
     color?: string;
     size?: Size;
     amount: number;
-    linkImg: string;
+    linkImg: string[];
 }
 export enum Size {
     size_m = 0,
@@ -19,7 +19,7 @@ export class ProductInfor {
     color?: string;
     size?: Size;
     amount: number;
-    linkImg: string;
+    linkImg: string[];
     constructor(args?: any){
         this._id = args.id?? undefined;
         this.name = args.name?? "";
@@ -27,6 +27,6 @@ export class ProductInfor {
         this.color = args.color?? "";
         this.size = args.size?? 0;
         this.price = args.price?? 0;
-        this.linkImg = args.linkImg?? "";
+        this.linkImg = args.linkImg?? [];
     }
 }

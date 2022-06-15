@@ -33,7 +33,7 @@ const ProductSchema = new Schema<IProductDocument, IProductSchema>({
         default: 0
     },
     linkImg: {
-        type: "string",
+        type: ["string"],
         required: true,
         trim: true,
     }
