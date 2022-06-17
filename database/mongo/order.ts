@@ -29,7 +29,7 @@ const orderSchema = new Schema<IOrderDocument, IOrderSchema>({
     phoneNumber: String,
     status: Number
 });
-export const orderModel = model(orderTable);
+export const orderModel = model(orderTable, orderSchema);
 
 export class OrderDb implements IOrderDb {
     async getAllOrders(): Promise<IOrder[]> {

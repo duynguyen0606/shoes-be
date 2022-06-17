@@ -3,21 +3,17 @@ export interface IProduct {
     name: string;
     price: number;
     color?: string;
-    size?: Size;
+    size?: number;
     amount: number;
     linkImg: string[];
 }
-export enum Size {
-    size_m = 0,
-    size_l = 1,
-    size_xl = 2,
-}
+
 export class ProductInfor {
     _id: string | undefined;
     name: string;
     price: number;
     color?: string;
-    size?: Size;
+    size?: number;
     amount: number;
     linkImg: string[];
     constructor(args?: any){

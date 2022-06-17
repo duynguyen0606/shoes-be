@@ -2,19 +2,20 @@ import { IUser } from "../models/user";
 import { BasicService } from "./basicService";
 
 export class UserService extends BasicService {
-    getAllUsers(): Promise<IUser[]> {
+    async getAllUsers(): Promise<IUser[]> {
         return this.userDB.getAllUsers();
     }
-    findUserByEmail(args: { email: string }): Promise<IUser> {
+    async findUserByEmail(args: { email: string }): Promise<IUser> {
         return this.userDB.findUserByEmail({ email: args.email });
     }
-    updateUser(args: {email: string, data: any}): Promise<IUser> {
+    async updateUser(args: {email: string, data: any}): Promise<IUser> {
         return this.userDB.updateUser(args)
     }
-    deleteUser(args: {email: string}): Promise<IUser> {
+    async deleteUser(args: {email: string}): Promise<IUser> {
         return this.userDB.deleteUser(args)
     }
-    createUser(args: IUser): Promise<IUser> {
+    async createUser(args: IUser): Promise<IUser> {
         return this.userDB.createUser(args);
     }
+    
 }

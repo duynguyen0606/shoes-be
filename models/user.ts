@@ -1,5 +1,7 @@
+import { ObjectId } from "mongoose";
+
 export interface IUser{
-    _id: string | undefined;
+    _id: ObjectId | undefined;
     email: string;
     password: string;
     name: string;
@@ -12,7 +14,7 @@ export enum Role {
     admin = 1
 }
 export class UserInfor {
-    _id: string | undefined;
+    _id: ObjectId | undefined;
     email: string;
     password: string;
     name: string;

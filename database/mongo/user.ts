@@ -19,7 +19,8 @@ const UserSchema = new Schema<IUserDocument, IUserSchema>({
     email: {
         type: 'string',
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     password: {
         type: 'string',
@@ -65,5 +66,4 @@ export class UserDb implements IUserDb {
     async getAllUsers(): Promise<IUser[]> {
         return UserModel.find();
     }
-
 }
