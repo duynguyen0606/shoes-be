@@ -73,11 +73,9 @@ export class UserController {
     createAdmin = async (req, res) => {
         try {
             const body: { name, email, password, address, phoneNumber, role } = await utils.getPostData(req, res);
-
+            console.log(body.email)
             let emailExist = await userDB.findUserByEmail({email: body.email})
             
-            console.log("Tim mail")
-
             console.log(emailExist)
             if (emailExist) {
                 let err: any = new Error("Email đã tồn tại trong hệ thống");
