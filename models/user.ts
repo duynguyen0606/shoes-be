@@ -20,12 +20,12 @@ export class UserInfor {
     phoneNumber?: string;
     role: Role;
     constructor(args?: any) {
-        this._id = args._id?? undefined;
-        this.email = args.email?? "";
-        this.password = args.password?? "";
-        this.address = args.address?? "";
-        this.phoneNumber = args.phoneNumber?? "";
-        this.role = args.role?? 0;
-        this.name = args.name ?? "";
+        this._id = args?._id?? undefined;
+        this.email = args?.email?? "";
+        this.password = args?.password?? "";
+        this.address = args?.address?? "";
+        this.phoneNumber = args?.phoneNumber?? "";
+        this.role = args?.role?? 0;
+        this.name = args?.name ?? "";
     }
 }
