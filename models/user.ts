@@ -20,7 +20,7 @@ export class UserInfor {
     phoneNumber?: string;
     role: Role;
     constructor(args?: any) {
-        this._id = args.id?? undefined;
+        this._id = args._id?? undefined;
         this.email = args.email?? "";
         this.password = args.password?? "";
         this.address = args.address?? "";

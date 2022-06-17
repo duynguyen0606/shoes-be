@@ -21,7 +21,7 @@ export class ProductInfor {
     amount: number;
     linkImg: string[];
     constructor(args?: any){
-        this._id = args.id?? undefined;
+        this._id = args._id?? undefined;
         this.name = args.name?? "";
         this.amount = args.amount?? 0;
         this.color = args.color?? "";
