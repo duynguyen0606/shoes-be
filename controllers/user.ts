@@ -15,7 +15,7 @@ export class UserController {
 
     login = async (req, res) => {
         try {
-            const body: { email, password } = await utils.getPostData(req, res);
+            const body: { email, password } = await utils.getPostData(req);
             let user = await userService.findUserByEmail({email: body.email})
             console.log(user)
             if (!user) {
@@ -44,9 +44,12 @@ export class UserController {
             }
 
             let acessToken = utils.generateAccessToken(userFormatted)
+            const loginResult = {
+                acessToken,
+                userFormatted
+            }
+            utils.sendRespond(res,acessToken,200,loginResult)
 
-            console.log(userFormatted)
-            res.end(acessToken)
         } catch (error) {
             throw error
         }
@@ -54,12 +57,12 @@ export class UserController {
 
     createUser = async (req, res) => {
         try {
-            const body: { name, email, password, address, phoneNumber, role } = await utils.getPostData(req, res);
+            const body: { name, email, password  } = await utils.getPostData(req);
             const user = await userDB.createUser({
                 email: body.email,
                 password: body.password,
                 name: body.name,
-                role: body.role
+                role: 0
             })
     
             console.log(user)
@@ -72,12 +75,11 @@ export class UserController {
 
     createAdmin = async (req, res) => {
         try {
-            const body: { name, email, password, address, phoneNumber, role } = await utils.getPostData(req, res);
-            console.log(body.email)
+
+            const body: { name, email, password, address, phoneNumber, role } = await utils.getPostData(req);
             let emailExist = await userDB.findUserByEmail({email: body.email})
             
-            console.log(emailExist)
-            if (emailExist) {
+            if (emailExist._id !== undefined) {
                 let err: any = new Error("Email đã tồn tại trong hệ thống");
                 err.status = 400;
                 throw err;
@@ -91,11 +93,9 @@ export class UserController {
                 name: body.name,
                 role: body.role
             })
-            res.setHeader("Content-Type", "application/json");
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.writeHead(200);
-            res.write(JSON.stringify(admin));
-            res.end("\n");
+
+            await utils.sendRespond(res, utils.getAccessToken(req),200,admin )
+
         } catch (error) {
             throw error
         }
@@ -106,21 +106,51 @@ export class UserController {
     };
 
     deleteUser = async (req, res) => {
+        try {
 
+            const body: {email} = await utils.getPostData(req);
+            const result = await userService.deleteUser({email: body.email});
+            if (result._id === undefined) {
+                await utils.sendRespond(res, utils.getAccessToken(req),200, {message: "Đã xóa thành công"})
+            } else await utils.sendRespond(res, utils.getAccessToken(req), 404,{message: "Đã xảy ra lỗi"} ) 
+
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     getAllUsers = async (req, res) => {
-        const users = await userService.getAllUsers();
-        res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.writeHead(200);
-        res.write(JSON.stringify(users));
-        res.end("\n");
+        try {
+            let currentUer = await utils.requestUser(req)
+            console.log(currentUer)
+            const users = await userService.getAllUsers();
+    
+    
+            res.setHeader("Content-Type", "application/json");
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.writeHead(200);
+            res.write(JSON.stringify(users));
+            res.end("\n");
+        } catch (error) {
+            
+        }
     };
 
     getUser = async (req, res) => {
-
+      try {
+        const body: {email} = await utils.getPostData(req);
+        let user = await userService.findUserByEmail({email: body.email})
+        if (user.email === "") {
+            let error = {message: "Not found", status: 404}
+            utils.sendRespond(res, utils.getAccessToken(req), 404, error )
+        }
+        else utils.sendRespond(res, utils.getAccessToken(req), 200, user)
+      } catch (error) {
+        console.log(error)
+      }
+   
     };
+
 
 }
 

@@ -7,9 +7,6 @@ const routesUser = {
     GET: {
       "user/list": async (req, res) => {
         await controllers.getAllUsers(req, res)
-      },
-      "user/profile": async (req, res) => {
-
       }
     },
     POST: {
@@ -24,10 +21,13 @@ const routesUser = {
         await controllers.createAdmin(req, res)
       },
       "user/delete": async (req, res) => {
-
+        await controllers.deleteUser(req, res)
       },
       "user/update-profile": async (req, res) => {
-
+        await controllers.updateProfile(req, res)
+      },
+      "user/detail": async (req, res) => {
+        await controllers.getUser(req, res)
       }
     },
     notFound: (req, res) => {

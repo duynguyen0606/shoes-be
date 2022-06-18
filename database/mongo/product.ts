@@ -60,7 +60,7 @@ export class ProductDb implements IProductDb{
         return new ProductInfor(product);
     }
     async deleteProduct(agrs: { _id: string; }): Promise<IProduct> {
-        return new ProductInfor(ProductModel.findOneAndDelete({ _id: agrs._id}));
+        return new ProductInfor(ProductModel.findOneAndDelete({ _id: agrs._id}).exec());
     }
 
 }

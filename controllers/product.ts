@@ -11,7 +11,7 @@ export class ProductController {
 
     createProduct = async (req, res) => {
         try {
-            const data : {name, price, color, size, amount, linkImg } = await utils.getPostData(req, res);
+            const data : {name, price, color, size, amount, linkImg } = await utils.getPostData(req);
             const product = await productDB.createProduct({
                 _id: undefined,
                 name: data.name,
@@ -42,7 +42,7 @@ export class ProductController {
     };
     
     updateProduct = async (req, res)=>{
-        const data : {name, price, color, size, amount, linkImg } = await utils.getPostData(req, res);
+        const data : {name, price, color, size, amount, linkImg } = await utils.getPostData(req);
         const product = await productDB.createProduct({
             _id: undefined,
             name: data.name,

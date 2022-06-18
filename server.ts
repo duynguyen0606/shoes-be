@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(async (req, res) => {
     req.on("data", () => {})
+
     let path = req.url?.replace(/^\/+|\/+$/g, "");
     // let path = req.url
     let method = req.method
