@@ -60,10 +60,10 @@ export class UserDb implements IUserDb {
         return new UserInfor(user);
     }
     async deleteUser(args: { email: string; }): Promise<IUser> {
-        return new UserInfor(UserModel.findOneAndDelete({ email: args.email}));
+        return new UserInfor(await UserModel.findOneAndDelete({ email: args.email}));
     }
     async getAllUsers(): Promise<IUser[]> {
-        return UserModel.find();
+        return await UserModel.find();
     }
 
 }
