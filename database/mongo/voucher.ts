@@ -32,7 +32,7 @@ export class VoucherDb implements IVoucherDb {
         return new VoucherInfo(voucher);
     }
     async updateVoucherById(args: { id: string; data: any; }): Promise<IVoucher> {
-        const voucher = await voucherModel.findByIdAndUpdate(args.id, args.data);
+        const voucher = await voucherModel.findByIdAndUpdate(args.id, args.data, { new: true });
         return new VoucherInfo(voucher);
     }
     async deleteVoucherById(args: { id: string; }): Promise<IVoucher> {

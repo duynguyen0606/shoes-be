@@ -56,7 +56,9 @@ export class UserDb implements IUserDb {
         return new UserInfor(newUser);
     }
     async updateUser(args: { email: string; data: any; }): Promise<IUser> {
-        const user = await UserModel.findOneAndUpdate({ email: args.email }, args.data);
+        const user = await UserModel.findOneAndUpdate({ email: args.email }, args.data, {
+            new: true,
+        });
         return new UserInfor(user);
     }
     async deleteUser(args: { email: string; }): Promise<IUser> {
