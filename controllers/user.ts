@@ -124,9 +124,8 @@ export class UserController {
         try {
             const data: { name, address, phoneNumber } = await utils.getPostData(req)
             let currentUser = await utils.requestUser(req)
-            console.log(currentUser)
-            let email = currentUser.email
 
+            let email = currentUser.email
             let user = await userService.updateUser({ email: email, data: data })
             console.log(user)
 
