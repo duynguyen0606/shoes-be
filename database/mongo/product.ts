@@ -56,7 +56,7 @@ export class ProductDb implements IProductDb{
         return new ProductInfor(product);
     }
     async updateProduct(agrs: { _id: string; data: any; }): Promise<IProduct> {
-        const product = await ProductModel.findByIdAndUpdate(agrs._id, agrs.data);
+        const product = await ProductModel.findByIdAndUpdate(agrs._id, agrs.data, { new: true });
         return new ProductInfor(product);
     }
     async deleteProduct(agrs: { _id: string; }): Promise<IProduct> {

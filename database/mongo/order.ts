@@ -43,7 +43,7 @@ export class OrderDb implements IOrderDb {
         return await orderModel.find({status: args.status});
     }
     async updateOrder(args: { id: string; data: any; }): Promise<IOrder> {
-        return new OrderInfo(await orderModel.findByIdAndUpdate(args.id, args.data))
+        return new OrderInfo(await orderModel.findByIdAndUpdate(args.id, args.data, { new: true }))
     }
     async createOrder(args: { data: IOrder; }): Promise<IOrder> {
         return new OrderInfo(await orderModel.create(args.data));
