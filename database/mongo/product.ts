@@ -44,7 +44,7 @@ export { ProductModel }
 
 export class ProductDb implements IProductDb{
     async getAllProducts(): Promise<IProduct[]> {
-        return ProductModel.find();
+        return await ProductModel.find();
     }
     async findProductById(agrs: { _id: string; }): Promise<IProduct> {
         const product = await ProductModel.findById(agrs._id);
@@ -60,7 +60,7 @@ export class ProductDb implements IProductDb{
         return new ProductInfor(product);
     }
     async deleteProduct(agrs: { _id: string; }): Promise<IProduct> {
-        return new ProductInfor(ProductModel.findOneAndDelete({ _id: agrs._id}).exec());
+        return new ProductInfor(await ProductModel.findOneAndDelete({ _id: agrs._id}));
     }
 
 }

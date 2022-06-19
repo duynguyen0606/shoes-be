@@ -12,4 +12,8 @@ export class ValidatorUser {
     validateCreateAdmin = () => {
 
     }
+
+    validateUpdateProfile = () => {
+        
+    }
 }

@@ -7,6 +7,8 @@ import passport from "passport";
 import connectDatabase from "./utils/mongodb";
 import { routes } from "./routes/routes";
 
+
+
 const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(async (req, res) => {
@@ -15,10 +17,12 @@ const server = http.createServer(async (req, res) => {
     let path = req.url?.replace(/^\/+|\/+$/g, "");
     // let path = req.url
     let method = req.method
-    let route =
-            typeof routes[`${path?.split("/")[0]}`] !== "undefined" ? routes[`${path?.split("/")[0]}`] : routes["notFound"];
+    
+    let route = typeof routes[`${path?.split("/")[0]}`] !== "undefined" ? routes[`${path?.split("/")[0]}`] : routes["notFound"];
     route(req, res);
+  
 })
+
 
 connectDatabase();
 
