@@ -1,12 +1,6 @@
 import mongoose from "mongoose";
 import { DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PWD } from "./config";
-// const {
-//   DB_HOST = '127.0.0.1',
-//   DB_PORT = '27017',
-//   DB_USER = '',
-//   DB_PWD = '',
-//   DB_NAME = 'T20CNW',
-// } = process.env;
+
 
 const DB_URL = `mongodb://${DB_HOST}:${DB_PORT}`;
 

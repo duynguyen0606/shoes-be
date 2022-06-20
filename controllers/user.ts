@@ -76,7 +76,7 @@ export class UserController {
                 name: body.name,
                 address: body.address,
                 phoneNumber: body.phoneNumber,
-                role: 0
+                role: Role.client
             })
 
             res.setHeader("Content-Type", "application/json");
@@ -108,7 +108,7 @@ export class UserController {
                 name: body.name,
                 address: body.address,
                 phoneNumber: body.phoneNumber,
-                role: 1
+                role: Role.admin
             })
 
             await utils.sendRespond(res, utils.getAccessToken(req), 201, admin)
