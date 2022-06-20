@@ -38,8 +38,7 @@ export class OrderController {
     getOrderbyStstus = async (req, res) => {
         try {
             const body: {status} = await utils.getPostData(req);
-            console.log(OrderStatus)
-            if (OrderStatus[body.status] === undefined ){
+            if (OrderStatus[body.status] === undefined || body.status.toString() === "1" || body.status.toString() === "0" || body.status.toString() === "2"){
                 return utils.sendRespond(res, utils.getAccessToken(req),404, {message: "Trạng thái không hợp lệ"})
             }
             const orders = await orderService.getOrderByStatus({status: OrderStatus[`${body.status}`]})
@@ -51,12 +50,17 @@ export class OrderController {
 
     createOrder = async (req, res) => {
         try {
-            const body: { products, totalPrice, status } = await utils.getPostData(req);
+            const body: { products, status } = await utils.getPostData(req);
             const currentUser = await utils.requestUser(req);
+            let totalPrice = 0;
+            for ( let product of body.products){
+                totalPrice += product["amount"]*product["price"]
+            }
+
             let order = {
                 _id: undefined,
                 products: body.products,
-                totalPrice: body.totalPrice,
+                totalPrice: totalPrice,
                 userId: currentUser._id,
                 address: currentUser.address,
                 phoneNumber: currentUser.phoneNumber,
@@ -74,7 +78,8 @@ export class OrderController {
 
     updateOrder = async (req, res) => {
         try {
-            
+            const body: {products, } =  await utils.getPostData(req)
+
         } catch (error) {
             
         }
