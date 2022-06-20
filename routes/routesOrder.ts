@@ -1,23 +1,27 @@
+import { OrderController } from "../controllers/order"
+const controllers = new OrderController()
+
 const routesOrder = {
     "GET": {
-
+        "order/list": async (req, res) => {
+            await controllers.getAllOrders( req, res);
+        }
     },
     "POST": {
-
-    },
-    notFound: (req, res) => {
-        let payload = {
-          message: "File not found",
-          code: 404
+        "order/detail": async (req, res) => {
+            await controllers.getOrder(req, res);
+        },
+        "order/status": async (req, res) => {
+            await controllers.getOrderbyStstus(req, res);
+        },
+        "order/update": async (req, res) => {
+            await controllers.updateOrder(req, res);
+        },
+        "order/create-order": async (req, res) => {
+            await controllers.createOrder(req, res)
         }
-        let payloadStr = JSON.stringify(payload);
-        res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.writeHead(404);
-    
-        res.write(payloadStr);
-        res.end("\n");
-      }
+    },
+    notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
 }
 
 export default routesOrder

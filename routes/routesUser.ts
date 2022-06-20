@@ -1,6 +1,4 @@
-import { App } from "..";
 import { UserController } from "../controllers/user";
-
 const controllers = new UserController()
 
 const routesUser = {
@@ -11,7 +9,6 @@ const routesUser = {
     },
     POST: {
       login: async (req, res) => {
-
         await controllers.login(req, res)
       },
       register: async (req, res) => {
@@ -30,19 +27,7 @@ const routesUser = {
         await controllers.getUser(req, res)
       }
     },
-    notFound: (req, res) => {
-        let payload = {
-          message: "File not found",
-          code: 404
-        }
-        let payloadStr = JSON.stringify(payload);
-        res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.writeHead(404);
-    
-        res.write(payloadStr);
-        res.end("\n");
-      }
+    notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
 }
 
 export default routesUser

@@ -2,9 +2,7 @@ import jwt from "jsonwebtoken"
 import { ObjectId } from "mongoose";
 import { Role } from "../models/user";
 import jwtDecode from "jwt-decode";
-
-const TOKEN_SECRET = "Long-Machine-Panama-82"
-
+import { TOKEN_SECRET } from "./config";
 
 
 export class Utils {
@@ -15,7 +13,6 @@ export class Utils {
             await req.on("data", (chunk) => {
                 body += chunk.toString();
             })
-
             return JSON.parse(body)
         } catch (error) {
             console.log(error)
@@ -50,6 +47,13 @@ export class Utils {
 
     getAccessToken = (req)  => {
         return req.headers['authorization'].split(" ")[1]
+    }
+
+    routing = (req, res, routesType) => {
+        let path = req.url?.replace(/^\/+|\/+$/g, "");
+        let method = req.method
+        let route = typeof routesType[method][path] !== "undefined" ? routesType[method][path] : routesType["notFound"];
+        route(req, res);
     }
 
 }

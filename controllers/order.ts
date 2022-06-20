@@ -5,7 +5,7 @@ const utils = new Utils()
 const orderService = new OrderService()
 
 export class OrderController {
-    getAllOrder = async (req, res) => {
+    getAllOrders = async (req, res) => {
 
     };
 

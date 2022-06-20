@@ -4,52 +4,18 @@ import routesProduct from "./routesProduct";
 import routesUser from "./routesUser";
 import routesVoucher from "./routesVoucher";
 import { ProductController } from "../controllers/product";
+import { Utils } from "../utils/utils";
+
 const controller = new ProductController()
+const utils = new Utils()
 
 export const routes = {
-    login: async (req, res) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route = typeof routesUser[method][path] !== "undefined" ? routesUser[method][path] : routesUser["notFound"];
-        route(req, res);
-    },
-    register: async (req, res) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route =
-            typeof routesUser[method][path] !== "undefined" ? routesUser[method][path] : routesUser["notFound"];
-        route(req, res);
-    },
-    product: async (req, res) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route =
-            typeof routesProduct[method][path] !== "undefined" ? routesProduct[method][path] : routesProduct["notFound"];
-        route(req, res);
-    },
-    order: (req, res) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route =
-            typeof routesOrder[method][path] !== "undefined" ? routesOrder[method][path] : routesOrder["notFound"];
-        route(req, res);
-    },
-    user: (req, res) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route =
-            typeof routesUser[method][path] !== "undefined" ? routesUser[method][path] : routesUser["notFound"];
-        route(req, res);
-    },
-    voucher: (req, res) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route =
-            typeof routesVoucher[method][path] !== "undefined" ? routesVoucher[method][path] : routesVoucher["notFound"];
-        route(req, res);
-    },
-    notFound: () => {
-
-    }
+    login: (req, res) => { utils.routing(req, res, routesUser) },
+    register: (req, res) => { utils.routing(req, res, routesUser) },
+    product: (req, res) => { utils.routing(req, res, routesProduct) },
+    order: (req, res) => { utils.routing(req, res, routesOrder) },
+    user: (req, res) => { utils.routing(req, res, routesUser) },
+    voucher: (req, res) => { utils.routing(req, res, routesVoucher) },
+    notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
 }
 

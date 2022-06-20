@@ -6,7 +6,7 @@ const voucherService = new VoucherService()
 
 
 export class VoucherController {
-    getAllVoucher = async (req, res) => {
+    getAllVouchers = async (req, res) => {
 
     };
 

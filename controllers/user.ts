@@ -5,11 +5,9 @@ import { Utils } from "../utils/utils"
 import bcrypt from "bcryptjs"
 import { Role } from "../models/user"
 import { UserDb } from "../database/mongo/user"
-
+import { BCRYPT_SALT } from "../utils/config"
 const utils = new Utils()
 const userService = new UserService()
-// const userDB = new UserDb()
-const BCRYPT_SALT = 10
 
 export class UserController {
 
@@ -29,7 +27,7 @@ export class UserController {
             }
 
             if (!bcrypt.compareSync(body.password, user.password)) {
-                let err: any = new Error("Username/Email or Password not match");
+                let err: any = new Error("Email or Password not match");
                 err.status = 400;
                 throw err;
             }
@@ -82,7 +80,7 @@ export class UserController {
             })
 
             res.setHeader("Content-Type", "application/json");
-            res.writeHead(200)
+            res.writeHead(201)
             res.write(JSON.stringify(user))
             res.end("\n")
         } catch (error) {
@@ -113,7 +111,7 @@ export class UserController {
                 role: 1
             })
 
-            await utils.sendRespond(res, utils.getAccessToken(req), 200, admin)
+            await utils.sendRespond(res, utils.getAccessToken(req), 201, admin)
 
         } catch (error) {
             throw error
@@ -128,8 +126,18 @@ export class UserController {
             let email = currentUser.email
             let user = await userService.updateUser({ email: email, data: data })
             console.log(user)
-
-
+            let userToken = {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                address: user.address,
+                phoneNumber: user.phoneNumber,
+                role: user.role
+            }
+            if (!user) {
+                return utils.sendRespond(res,utils.getAccessToken(req), 404, {message: "Đã xảy ra lỗi"})
+            }
+            utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
         } catch (error) {
             console.log(error)
         }
@@ -160,6 +168,7 @@ export class UserController {
 
     getUser = async (req, res) => {
         try {
+
             const body: { email } = await utils.getPostData(req);
             let user = await userService.findUserByEmail({ email: body.email })
             if (user.email === "") {
@@ -173,6 +182,13 @@ export class UserController {
 
     };
 
+    changePassword = async (req, res) => {
+        try {
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 }
 
