@@ -28,6 +28,8 @@ const orderSchema = new Schema<IOrderDocument, IOrderSchema>({
     address: String,
     phoneNumber: String,
     status: Number
+}, {
+    timestamps: true,
 });
 export const orderModel = model(orderTable, orderSchema);
 
