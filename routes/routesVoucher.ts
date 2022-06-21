@@ -2,13 +2,13 @@ import { VoucherController } from "../controllers/voucher"
 const controllers = new VoucherController()
 
 const routesVoucher = {
-    "GET": {
+    GET: {
         "voucher/list": async (req, res) => {
             await controllers.getAllVouchers(req, res);
         }
 
     },
-    "POST": {
+    POST: {
         "voucher/create-voucher": async (req, res) => {
             await controllers.createVoucher(req, res);
         },

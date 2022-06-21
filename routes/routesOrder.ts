@@ -2,17 +2,17 @@ import { OrderController } from "../controllers/order"
 const controllers = new OrderController()
 
 const routesOrder = {
-    "GET": {
+    GET: {
         "order/list": async (req, res) => {
             await controllers.getAllOrders( req, res);
         }
     },
-    "POST": {
+    POST: {
         "order/detail": async (req, res) => {
             await controllers.getOrder(req, res);
         },
         "order/status": async (req, res) => {
-            await controllers.getOrderbyStstus(req, res);
+            await controllers.getOrderbyStatus(req, res);
         },
         "order/update": async (req, res) => {
             await controllers.updateOrder(req, res);

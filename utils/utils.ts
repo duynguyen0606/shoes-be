@@ -31,7 +31,7 @@ export class Utils {
         return jwt.sign({ currentUser }, TOKEN_SECRET, { expiresIn: 7 * 60 * 60 * 24 });
     }
 
-    sendRespond = async (res, accessToken, statusCode, data) => {
+    sendRespond = async (res, accessToken , statusCode, data) => {
         res.setHeader("Authorization", `Bearer ${accessToken}`)
         res.setHeader("Content-Type", "application/json");
         res.writeHead(statusCode)

@@ -8,6 +8,8 @@ export interface IOrder {
     address: string;
     phoneNumber: string;
     status: OrderStatus;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export enum OrderStatus {
@@ -23,6 +25,8 @@ export enum OrderStatus {
     address: string;
     phoneNumber: string;
     status: OrderStatus;
+    createdAt?: string;
+    updatedAt?: string;
     constructor(arg?: any){
         this._id = arg?._id?? undefined;
         this.products = arg?.products?? [];
@@ -31,5 +35,7 @@ export enum OrderStatus {
         this.address = arg?.address ?? "";
         this.phoneNumber = arg?.phoneNumber ?? "";
         this.status = arg?.status ?? OrderStatus.pending;
+        this.createdAt = arg?.createdAt ?? "";
+        this.updatedAt = arg?.updatedAt ?? "";
     }
 }

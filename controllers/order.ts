@@ -35,13 +35,14 @@ export class OrderController {
         }
     };
 
-    getOrderbyStstus = async (req, res) => {
+    getOrderbyStatus = async (req, res) => {
         try {
             const body: {status} = await utils.getPostData(req);
-            if (OrderStatus[body.status] === undefined || body.status.toString() === "1" || body.status.toString() === "0" || body.status.toString() === "2"){
+
+            if (OrderStatus[body.status] === undefined ){
                 return utils.sendRespond(res, utils.getAccessToken(req),404, {message: "Trạng thái không hợp lệ"})
             }
-            const orders = await orderService.getOrderByStatus({status: OrderStatus[`${body.status}`]})
+            const orders = await orderService.getOrderByStatus({status: body.status})
             return utils.sendRespond(res, utils.getAccessToken(req),200, orders)
         } catch (error) {
             
@@ -50,17 +51,13 @@ export class OrderController {
 
     createOrder = async (req, res) => {
         try {
-            const body: { products, status } = await utils.getPostData(req);
+            const body: { products,totalPrice, status } = await utils.getPostData(req);
             const currentUser = await utils.requestUser(req);
-            let totalPrice = 0;
-            for ( let product of body.products){
-                totalPrice += product["amount"]*product["price"]
-            }
 
             let order = {
                 _id: undefined,
                 products: body.products,
-                totalPrice: totalPrice,
+                totalPrice: body.totalPrice,
                 userId: currentUser._id,
                 address: currentUser.address,
                 phoneNumber: currentUser.phoneNumber,
@@ -78,10 +75,18 @@ export class OrderController {
 
     updateOrder = async (req, res) => {
         try {
-            const body: {products, } =  await utils.getPostData(req)
+
+            const body: { id, data } =  await utils.getPostData(req)
+            console.log(body.data)
+            const orderUpdated = await orderService.updateOrder({id: body.id, data: body.data})
+            console.log("ABC")
+            if(orderUpdated._id === undefined) {
+                return utils.sendRespond(res, utils.getAccessToken(req), 400, {message: "Cập nhật thất bại"})
+            }
+            return utils.sendRespond(res, utils.getAccessToken(req), 201, orderUpdated)
 
         } catch (error) {
-            
+            console.log(error)
         }
     };
 }
