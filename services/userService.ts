@@ -17,4 +17,5 @@ export class UserService extends BasicService {
     async createUser(args: IUser): Promise<IUser> {
         return this.userDB.createUser(args);
     }
+    
 }
