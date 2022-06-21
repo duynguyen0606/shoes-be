@@ -25,7 +25,10 @@ const routesUser = {
       },
       "user/detail": async (req, res) => {
         await controllers.getUser(req, res)
-      }
+      },
+      "user/change-password": async (req, res) => {
+        await controllers.changePassword(req, res)
+      },
     },
     notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
 }

@@ -15,21 +15,17 @@ export class UserController {
         try {
             const body: { email, password } = await utils.getPostData(req);
             let user = await userService.findUserByEmail({ email: body.email })
-            console.log(user)
             if (!user) {
                 user = await userService.findUserByEmail({ email: body.email })
             }
 
             if (!user) {
-                let err: any = new Error("Email or Password not match");
-                err.status = 404;
-                throw err;
+                return utils.responseUnauthor(res, 404, {message: "Email or Password not match"})
             }
 
             if (!bcrypt.compareSync(body.password, user.password)) {
-                let err: any = new Error("Email or Password not match");
-                err.status = 400;
-                throw err;
+                return utils.responseUnauthor(res, 404, {message: "Email or Password not match"})
+
             }
 
             const userFormatted = {
@@ -46,7 +42,7 @@ export class UserController {
                 acessToken,
                 userFormatted
             }
-            utils.sendRespond(res, acessToken, 200, loginResult)
+            return utils.sendRespond(res, acessToken, 200, loginResult)
 
         } catch (error) {
             throw error
@@ -120,12 +116,11 @@ export class UserController {
 
     updateProfile = async (req, res) => {
         try {
-            const data: { name, address, phoneNumber } = await utils.getPostData(req)
+            const body: { name, address, phoneNumber } = await utils.getPostData(req)
             let currentUser = await utils.requestUser(req)
 
             let email = currentUser.email
-            let user = await userService.updateUser({ email: email, data: data })
-            console.log(user)
+            let user = await userService.updateUser({ email: email, data: body })
             let userToken = {
                 id: user._id,
                 name: user.name,
@@ -134,7 +129,7 @@ export class UserController {
                 phoneNumber: user.phoneNumber,
                 role: user.role
             }
-            if (!user) {
+            if (user._id === undefined) {
                 return utils.sendRespond(res,utils.getAccessToken(req), 404, {message: "Đã xảy ra lỗi"})
             }
             utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
@@ -184,7 +179,24 @@ export class UserController {
 
     changePassword = async (req, res) => {
         try {
-            
+            const body: { password } = await utils.getPostData(req)
+            let currentUser = await utils.requestUser(req)
+
+            let email = currentUser.email
+            const  password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(BCRYPT_SALT))
+            let user = await userService.updateUser({ email: email, data: {password: password} })
+            let userToken = {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                address: user.address,
+                phoneNumber: user.phoneNumber,
+                role: user.role
+            }
+            if (user._id === undefined) {
+                return utils.sendRespond(res,utils.getAccessToken(req), 404, {message: "Đã xảy ra lỗi"})
+            }
+            utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
         } catch (error) {
             console.log(error)
         }

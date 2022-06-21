@@ -39,6 +39,13 @@ export class Utils {
         res.end("\n")
     }
 
+    responseUnauthor = async (res, statusCode, data) => {
+        res.setHeader("Content-Type", "application/json");
+        res.writeHead(statusCode)
+        res.write(JSON.stringify(data))
+        res.end("\n")
+    }
+
     requestUser = async (req) => {
         const token = req.headers['authorization'].split(" ")[1]
         let data:{currentUser}= jwtDecode(token)
