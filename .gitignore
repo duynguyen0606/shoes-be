@@ -1,4 +1,4 @@
 node_modules/
-yarn.lock/
-app.ts/
-superRoutes
+superRoutes/
+/yarn.lock
+/app.ts
