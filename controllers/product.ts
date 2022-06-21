@@ -35,7 +35,10 @@ export class ProductController {
     getAllProducts = async (req, res) => {
         try {
             const products = await productService.findAllProducts();
-            utils.sendRespond(res,utils.getAccessToken(req),200,products)
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(200)
+            res.write(JSON.stringify(products))
+            res.end("\n")
         } catch (error) {
             console.log(error)
         }

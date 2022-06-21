@@ -10,7 +10,7 @@ export class OrderService extends BasicService {
     async getOrderByStatus(args: {status: OrderStatus}): Promise<IOrder[]> {
         return this.orderDB.getOrderByStatus(args);
     }
-    async updateOrder(args: {id: string, data: IOrder}): Promise<IOrder> {
+    async updateOrder(args: {id: string, data: any}): Promise<IOrder> {
         return this.orderDB.updateOrder(args);
     }
     async createOrder(args: {data: IOrder}): Promise<IOrder> {
