@@ -1,27 +1,16 @@
-import { OrderController } from "../controllers/order"
+import { OrderController } from "../controllers/order";
+import { Router } from "./Router";
+import { Required } from "../middlewares/userRequired";
+
+
+const router = new Router()
 const controllers = new OrderController()
+const required = new Required()
 
-const routesOrder = {
-    GET: {
-        "order/list": async (req, res) => {
-            await controllers.getAllOrders( req, res);
-        }
-    },
-    POST: {
-        "order/detail": async (req, res) => {
-            await controllers.getOrder(req, res);
-        },
-        "order/status": async (req, res) => {
-            await controllers.getOrderbyStatus(req, res);
-        },
-        "order/update": async (req, res) => {
-            await controllers.updateOrder(req, res);
-        },
-        "order/create-order": async (req, res) => {
-            await controllers.createOrder(req, res)
-        }
-    },
-    notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
-}
+router.get('/order/list', controllers.getAllOrders)
+router.post('/order/detail', controllers.getOrder)
+router.post('/order/create-order', controllers.createOrder)
+router.post('/order/status', controllers.getOrderbyStatus)
+router.post('/order/update', required.userRequired, controllers.updateOrder)
 
-export default routesOrder
+export default router

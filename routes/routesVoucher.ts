@@ -1,28 +1,17 @@
-import { VoucherController } from "../controllers/voucher"
+import { VoucherController } from "../controllers/voucher";
+import { Router } from "./Router";
+import { Required } from "../middlewares/userRequired";
+
+const router = new Router()
 const controllers = new VoucherController()
+const required = new Required()
 
-const routesVoucher = {
-    GET: {
-        "voucher/list": async (req, res) => {
-            await controllers.getAllVouchers(req, res);
-        }
 
-    },
-    POST: {
-        "voucher/create-voucher": async (req, res) => {
-            await controllers.createVoucher(req, res);
-        },
-        "voucher/update": async (req, res) => {
-            await controllers.updateVoucher(req, res)
-        },
-        "voucher/delete": async (req, res) => {
-            await controllers.deleteVoucher(req, res);
-        },
-        "voucher/detail": async (req, res) => {
-            await controllers.getVoucher(req, res);
-        }
-    },
-    notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
-}
+router.get('/voucher/list', controllers.getAllVouchers)
+router.post('/voucher/detail', controllers.getVoucher)
+router.post('/voucher/delete', required.adminRequired, controllers.deleteVoucher)
+router.post('/voucher/update', required.adminRequired, controllers.updateVoucher)
+router.post('/voucher/create-voucher', required.adminRequired, controllers.createVoucher)
 
-export default routesVoucher
+
+export default router
