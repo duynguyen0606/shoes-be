@@ -1,4 +1,5 @@
 import { VoucherController } from "../controllers/voucher"
+import { ValidatorVoucher } from "../validators/validatorsVoucher";
 const controllers = new VoucherController()
 
 const routesVoucher = {

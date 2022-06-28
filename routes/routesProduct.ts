@@ -1,5 +1,7 @@
 
 import { ProductController } from "../controllers/product";
+import { ValidatorProduct } from "../validators/validatorProduct";
+
 const controllers = new ProductController()
 
 const routesProduct = {

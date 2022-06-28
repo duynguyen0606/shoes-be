@@ -1,5 +1,8 @@
 import { OrderController } from "../controllers/order"
+import { ValidatorOrder } from "../validators/validatorOrder";
+
 const controllers = new OrderController()
+const validators = new ValidatorOrder()
 
 const routesOrder = {
     GET: {

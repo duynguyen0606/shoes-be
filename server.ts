@@ -1,6 +1,4 @@
-// import { App } from ".";
-// const myApp = new App();
-// myApp.run();
+
 import http from "http";
 import passport from "passport";
 import connectDatabase from "./utils/mongodb";
