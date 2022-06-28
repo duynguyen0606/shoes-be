@@ -1,11 +1,11 @@
 
 import http from "http";
 import connectDatabase from "./utils/mongodb";
-import { Router} from "./superRoutes/Router";
-import routerUser from "./superRoutes/routesUser"
-import routerProduct from "./superRoutes/routesProduct"
-import routerOrder from "./superRoutes/routesOrder"
-import routerVoucher from "./superRoutes/routesVoucher"
+import { Router} from "./routes/Router";
+import routerUser from "./routes/routesUser"
+import routerProduct from "./routes/routesProduct"
+import routerOrder from "./routes/routesOrder"
+import routerVoucher from "./routes/routesVoucher"
 import { Required } from "./middlewares/userRequired";
 
 import * as dotenv from 'dotenv';
