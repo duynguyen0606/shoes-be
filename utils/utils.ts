@@ -58,12 +58,6 @@ export class Utils {
         return req.headers['authorization'].split(" ")[1]
     }
 
-    routing = (req, res, routesType) => {
-        let path = req.url?.replace(/^\/+|\/+$/g, "");
-        let method = req.method
-        let route = typeof routesType[method][path] !== "undefined" ? routesType[method][path] : routesType["notFound"];
-        route(req, res);
-    }
 
 }
 
