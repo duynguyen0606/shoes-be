@@ -1,5 +1,5 @@
 export interface IVoucher {
-    _id: string | undefined;
+    _id?: string | undefined;
     discount: number;
     condition: number;
 }

@@ -4,6 +4,12 @@ import { Role } from "../models/user";
 import jwtDecode from "jwt-decode";
 import { TOKEN_SECRET } from "./config";
 
+const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+    "Access-Control-Max-Age": 2592000, // 30 days
+    /** add other headers as per requirement */
+};
 
 export class Utils {
 
@@ -41,7 +47,7 @@ export class Utils {
 
     responseUnauthor = async (res, statusCode, data) => {
         res.setHeader("Content-Type", "application/json");
-        res.writeHead(statusCode)
+        res.writeHead(statusCode, headers)
         res.write(JSON.stringify(data))
         res.end("\n")
     }

@@ -14,7 +14,7 @@ export enum Role {
     admin = 1
 }
 export class UserInfor {
-    _id: ObjectId | undefined;
+    _id?: ObjectId | undefined;
     email: string;
     password: string;
     name: string;

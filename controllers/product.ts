@@ -11,14 +11,12 @@ export class ProductController {
 
     createProduct = async (req, res) => {
         try {
-            const data: { name, price, color, size, amount, linkImg } = await utils.getPostData(req);
+            const data: { name, price, color, size, linkImg } = await utils.getPostData(req);
             const product = await productService.createProduct({
-                _id: undefined,
                 name: data.name,
                 price: data.price,
                 color: data.color,
                 size: data.size,
-                amount: data.amount,
                 linkImg: data.linkImg
             })
             if (product._id === undefined) {

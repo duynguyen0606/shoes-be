@@ -20,17 +20,12 @@ const ProductSchema = new Schema<IProductDocument, IProductSchema>({
         trim: true,
     },
     size: {
-        type: "number",
+        type: [],
         required: true,
     },
     price: {
         type: "number",
         required: true,
-    },
-    amount: {
-        type: "number",
-        required: true,
-        default: 0
     },
     linkImg: {
         type: ["string"],

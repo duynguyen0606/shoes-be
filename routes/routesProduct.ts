@@ -24,7 +24,7 @@ const routesProduct = {
       await controllers.getProduct(req, res)
     }
   },
-  notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) }
+  // notFound: (req, res) => { res.end({ message: "Not found", status: 404 }) } 
 
 }
 export default routesProduct
