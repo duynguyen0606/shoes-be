@@ -12,7 +12,7 @@ export interface IProductSize{
 }
 
 export class ProductInfor {
-    _id: string | undefined;
+    _id?: string | undefined;
     name: string;
     price: number;
     color?: string;
