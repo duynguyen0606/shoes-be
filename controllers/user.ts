@@ -1,13 +1,18 @@
-import http from "http"
-import jwt from "jsonwebtoken"
 import { UserService } from "../services/userService"
 import { Utils } from "../utils/utils"
 import bcrypt from "bcryptjs"
 import { Role } from "../models/user"
-import { UserDb } from "../database/mongo/user"
 import { BCRYPT_SALT } from "../utils/config"
+import jwtDecode from "jwt-decode"
+
 const utils = new Utils()
 const userService = new UserService()
+const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+    "Access-Control-Max-Age": 2592000, // 30 days
+    /** add other headers as per requirement */
+};
 
 export class UserController {
 
@@ -57,7 +62,7 @@ export class UserController {
 
             if (emailExist._id !== undefined) {
                 res.setHeader("Content-Type", "application/json");
-                res.writeHead(404)
+                res.writeHead(404, headers);
                 res.write(JSON.stringify({message: "Email đã tồn tại trong hệ thống"}))
                 res.end("\n")
                 return 
@@ -76,7 +81,7 @@ export class UserController {
             })
 
             res.setHeader("Content-Type", "application/json");
-            res.writeHead(201)
+            res.writeHead(201, headers)
             res.write(JSON.stringify(user))
             res.end("\n")
         } catch (error) {
@@ -116,6 +121,7 @@ export class UserController {
 
     updateProfile = async (req, res) => {
         try {
+
             const body: { name, address, phoneNumber } = await utils.getPostData(req)
             let currentUser = await utils.requestUser(req)
 
@@ -154,6 +160,7 @@ export class UserController {
 
     getAllUsers = async (req, res) => {
         try {
+            let token: {exp} = jwtDecode(utils.getAccessToken(req))
             const users = await userService.getAllUsers();
             utils.sendRespond(res, utils.getAccessToken(req), 200, users)
         } catch (error) {
@@ -180,6 +187,7 @@ export class UserController {
     changePassword = async (req, res) => {
         try {
             const body: { password } = await utils.getPostData(req)
+
             let currentUser = await utils.requestUser(req)
 
             let email = currentUser.email

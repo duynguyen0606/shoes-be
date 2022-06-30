@@ -51,8 +51,10 @@ export class OrderController {
 
     createOrder = async (req, res) => {
         try {
+
             const body: { products,totalPrice, status } = await utils.getPostData(req);
             const currentUser = await utils.requestUser(req);
+
 
             let order = {
                 _id: undefined,
@@ -77,9 +79,7 @@ export class OrderController {
         try {
 
             const body: { id, data } =  await utils.getPostData(req)
-            console.log(body.data)
             const orderUpdated = await orderService.updateOrder({id: body.id, data: body.data})
-            console.log("ABC")
             if(orderUpdated._id === undefined) {
                 return utils.sendRespond(res, utils.getAccessToken(req), 400, {message: "Cập nhật thất bại"})
             }
