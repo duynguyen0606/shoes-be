@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ProductService } from "../services/productService";
 import { DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PWD } from "./config";
 
 

@@ -12,7 +12,7 @@ export class OrderController {
             const orders = await orderService.getAllOrders()
             utils.sendRespond(res, utils.getAccessToken(req), 200, orders)
         } catch (error) {
-            
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -31,7 +31,7 @@ export class OrderController {
             return utils.sendRespond(res, utils.getAccessToken(req),200, order)
 
         } catch (error) {
-            
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -45,7 +45,7 @@ export class OrderController {
             const orders = await orderService.getOrderByStatus({status: body.status})
             return utils.sendRespond(res, utils.getAccessToken(req),200, orders)
         } catch (error) {
-            
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -71,7 +71,7 @@ export class OrderController {
             }
             return utils.sendRespond(res, utils.getAccessToken(req), 201, orderCreated)
         } catch (error) {
-
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -86,7 +86,7 @@ export class OrderController {
             return utils.sendRespond(res, utils.getAccessToken(req), 201, orderUpdated)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 }

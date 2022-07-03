@@ -7,6 +7,12 @@ import jwtDecode from "jwt-decode"
 
 const utils = new Utils()
 const userService = new UserService()
+const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+    "Access-Control-Max-Age": 2592000, // 30 days
+    /** add other headers as per requirement */
+};
 
 export class UserController {
 
@@ -44,7 +50,7 @@ export class UserController {
             return utils.sendRespond(res, acessToken, 200, loginResult)
 
         } catch (error) {
-            throw error
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -56,7 +62,7 @@ export class UserController {
 
             if (emailExist._id !== undefined) {
                 res.setHeader("Content-Type", "application/json");
-                res.writeHead(404)
+                res.writeHead(404, headers);
                 res.write(JSON.stringify({message: "Email đã tồn tại trong hệ thống"}))
                 res.end("\n")
                 return 
@@ -75,12 +81,11 @@ export class UserController {
             })
 
             res.setHeader("Content-Type", "application/json");
-            res.writeHead(201)
+            res.writeHead(201, headers)
             res.write(JSON.stringify(user))
             res.end("\n")
         } catch (error) {
-            res.end("Error")
-            throw error
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -109,7 +114,7 @@ export class UserController {
             await utils.sendRespond(res, utils.getAccessToken(req), 201, admin)
 
         } catch (error) {
-            throw error
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -134,7 +139,7 @@ export class UserController {
             }
             utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -148,7 +153,7 @@ export class UserController {
             } else await utils.sendRespond(res, utils.getAccessToken(req), 404, { message: "Đã xảy ra lỗi" })
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -158,7 +163,7 @@ export class UserController {
             const users = await userService.getAllUsers();
             utils.sendRespond(res, utils.getAccessToken(req), 200, users)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -173,7 +178,7 @@ export class UserController {
             }
             utils.sendRespond(res, utils.getAccessToken(req), 200, user)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
 
     };
@@ -200,7 +205,7 @@ export class UserController {
             }
             utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     }
 

@@ -1,7 +1,7 @@
 import { IProduct } from "./product";
 
 export interface IOrder {
-    _id: string | undefined;
+    _id?: string | undefined;
     products: IProduct[];
     totalPrice: number;
     userId: string | undefined;
@@ -18,7 +18,7 @@ export enum OrderStatus {
     success,
 }
  export class OrderInfo {
-    _id: string | undefined;
+    _id?: string | undefined;
     products: IProduct[];
     totalPrice: number;
     userId: string | undefined;

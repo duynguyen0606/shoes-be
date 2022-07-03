@@ -7,14 +7,14 @@ const utils = new Utils()
 export class Router {
 
 
-    _registerRouter = (path, funct) => {
+    _registerRouter = (path, funct: any[]) => {
         let middlewares: any = []
         let controller 
         const len = funct.length
 
         if (len == 1) {
             middlewares = []
-            controller = funct.at(0)
+            controller = funct[0]
         }
 
         if(len >= 2) {

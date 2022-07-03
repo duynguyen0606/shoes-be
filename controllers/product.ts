@@ -10,16 +10,12 @@ export class ProductController {
 
     createProduct = async (req, res) => {
         try {
-
-            const data: { name, price, color, size, amount, linkImg } = await utils.getPostData(req);
-            
+            const data: { name, price, color, size, linkImg } = await utils.getPostData(req);
             const product = await productService.createProduct({
-                _id: undefined,
                 name: data.name,
                 price: data.price,
                 color: data.color,
                 size: data.size,
-                amount: data.amount,
                 linkImg: data.linkImg
             })
             if (product._id === undefined) {
@@ -28,7 +24,7 @@ export class ProductController {
             return utils.sendRespond(res, utils.getAccessToken(req), 201, product)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -39,7 +35,7 @@ export class ProductController {
             utils.responseUnauthor(res, 200, products)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -62,7 +58,7 @@ export class ProductController {
 
             return utils.sendRespond(res, utils.getAccessToken(req), 201, product)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -85,7 +81,7 @@ export class ProductController {
             return utils.responseUnauthor(res, 200, product)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -106,7 +102,7 @@ export class ProductController {
             return utils.sendRespond(res, utils.getAccessToken(req), 200, { message: "Xóa thành công", product: productDeleted })
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 }
