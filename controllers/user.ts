@@ -115,10 +115,10 @@ export class UserController {
 
     updateProfile = async (req, res) => {
         try {
-
             const body: { name, address, phoneNumber } = await utils.getPostData(req)
+            const test = await utils.getPostData(req)
+            console.log(test)
             let currentUser = await utils.requestUser(req)
-
             let email = currentUser.email
             let user = await userService.updateUser({ email: email, data: body })
             let userToken = {

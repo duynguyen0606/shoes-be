@@ -12,7 +12,7 @@ export class OrderController {
             const orders = await orderService.getAllOrders()
             utils.sendRespond(res, utils.getAccessToken(req), 200, orders)
         } catch (error) {
-
+            
         }
     };
 

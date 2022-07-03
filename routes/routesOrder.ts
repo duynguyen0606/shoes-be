@@ -11,6 +11,6 @@ router.get('/order/list', controllers.getAllOrders)
 router.post('/order/detail', controllers.getOrder)
 router.post('/order/create-order', controllers.createOrder)
 router.post('/order/status', controllers.getOrderbyStatus)
-router.post('/order/update', required.userRequired, controllers.updateOrder)
+router.post('/order/update', controllers.updateOrder)
 
 export default router

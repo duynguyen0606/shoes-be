@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ProductDb } from "../database/mongo/product";
 import { ProductService } from "../services/productService";
 import { Utils } from "../utils/utils";
 
