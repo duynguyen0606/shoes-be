@@ -86,6 +86,7 @@ export class CommentController {
             }
 
             if (body.type === 1) {
+
                 const commentDeleted = await commentService.deleteComment({_id: body.id})
                 if(commentDeleted._id === undefined) {
                     return utils.sendRespond(res, utils.getAccessToken(req), 404, {message: "Xóa bình luận không thành công. Vui lòng thử  lại"})
