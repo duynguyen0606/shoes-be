@@ -9,7 +9,7 @@ const required = new Required()
 router.get('/comments', controllers.getAllComments)
 router.post('/comment/post', controllers.createComment)
 router.post('/comment/edit', controllers.updateComment)
-router.post('/comment/delete',required.adminRequired, controllers.deleteComment)
+router.post('/comment/delete', controllers.deleteComment)
 router.post('/comment/reply', controllers.getAllReplyComments)
 
 export default router
