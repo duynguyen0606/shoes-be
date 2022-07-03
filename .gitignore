@@ -1,7 +1,5 @@
 node_modules/
-routesTest/
-/server.ts
-
-
-
+docker/
+/Dockerfile
+/docker-compose.yaml
 
