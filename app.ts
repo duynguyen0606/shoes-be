@@ -6,15 +6,17 @@ import routerUser from "./routes/routesUser"
 import routerProduct from "./routes/routesProduct"
 import routerOrder from "./routes/routesOrder"
 import routerVoucher from "./routes/routesVoucher"
+import routerComment from "./routes/routesComment"
 import { Required } from "./middlewares/userRequired";
-
+import { Utils } from "./utils/utils";
 import * as dotenv from 'dotenv';
 dotenv.config();
-routerUser; routerOrder; routerProduct;  routerVoucher
+routerUser; routerOrder; routerProduct; routerVoucher; routerComment;
 
 const router = new Router()
 const required = new Required()
 const port = process.env.PORT ;
+const utils = new Utils()
 
 const pathUnthorize = [
     '/login', 
@@ -22,7 +24,9 @@ const pathUnthorize = [
     '/product/list', 
     '/product/detail',
     '/voucher/list',
-    '/voucher/detail'
+    '/voucher/detail',
+    '/comments',
+    '/comment/replied'
 ]
 
 const server = http.createServer(async (req, res) => {
@@ -32,7 +36,7 @@ const server = http.createServer(async (req, res) => {
         router.runRouter(req, res)
     }
     else {
-        required.authenticate(req, res, router.runRouter)
+        await required.authenticate(req, res, router.runRouter)
     }
 
 })

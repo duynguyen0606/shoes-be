@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ProductDb } from "../database/mongo/product";
 import { ProductService } from "../services/productService";
 import { Utils } from "../utils/utils";
 
@@ -25,7 +24,7 @@ export class ProductController {
             return utils.sendRespond(res, utils.getAccessToken(req), 201, product)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -36,7 +35,7 @@ export class ProductController {
             utils.responseUnauthor(res, 200, products)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -59,7 +58,7 @@ export class ProductController {
 
             return utils.sendRespond(res, utils.getAccessToken(req), 201, product)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -82,7 +81,7 @@ export class ProductController {
             return utils.responseUnauthor(res, 200, product)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -103,7 +102,7 @@ export class ProductController {
             return utils.sendRespond(res, utils.getAccessToken(req), 200, { message: "Xóa thành công", product: productDeleted })
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 }
