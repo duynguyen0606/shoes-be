@@ -209,6 +209,10 @@ export class UserController {
         }
     }
 
+    logout = async (req, res) => {
+        utils.responseUnauthor(res, 200, {message: "Đăng xuất thành công"})
+    }
+
 }
 
 
