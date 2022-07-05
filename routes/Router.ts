@@ -58,12 +58,20 @@ export class Router {
     runRouter = (req, res) => {
         let method = req.method
         let path = req.url
-
+        console.log(method)
         if (method === "GET") {
             this.processRoute(req,res, getRoutes)
         } else if (method === "POST") {
             this.processRoute(req, res, postRoutes)
+        }else if (method === "OPTIONS") {
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Allow-Credentials", "true");
+            res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+            res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+            res.writeHead(200);
+            res.end();
         }
+    
     }
 
 

@@ -6,23 +6,21 @@ import { TOKEN_SECRET } from "./config";
 
 const headers = {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+    "Access-Control-Allow-Methods": "*",
     "Access-Control-Max-Age": 2592000, // 30 days
     /** add other headers as per requirement */
 };
 
 export class Utils {
 
-    getPostData = async (req) => {
-        try{
+    getPostData = (req) => {
             let body = "";
-            await req.on("data", (chunk) => {
+            req.on("data", (chunk) => {
                 body += chunk.toString();
             })
-            return JSON.parse(body)
-        }catch(err){
-            console.log(err)
-        }
+            req.on("end", function(){
+                return JSON.parse(body)
+            })
       
     }
 

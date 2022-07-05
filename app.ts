@@ -30,8 +30,6 @@ const pathUnthorize = [
 ]
 
 const server = http.createServer(async (req, res) => {
-
-    req.on("data", () => {})
     if (pathUnthorize.find((path) => { return path === req.url})) {
         router.runRouter(req, res)
     }
@@ -46,7 +44,6 @@ connectDatabase();
 server.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 })
-
 
 
 
