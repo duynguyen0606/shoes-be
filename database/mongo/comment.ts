@@ -54,14 +54,15 @@ export class CommentDb implements ICommentDb {
        return new CommentInfor(comment);
     }
     async updateComment(agrs: { _id: string; data: any; }): Promise<IComment> {
-       const comment = await commentModel.findByIdAndUpdate(agrs._id, agrs.data, {
-        new: true,
-       })
-       return new CommentInfor(comment);
+    //    const comment = await commentModel.findByIdAndUpdate(agrs._id, agrs.data, {new: true})
+       return new CommentInfor(await commentModel.findByIdAndUpdate(agrs._id, agrs.data, {new: true}));
     }
     async deleteComment(agrs: { _id: string; }): Promise<IComment> {
        const comment = await commentModel.findByIdAndDelete(agrs._id);
        return new CommentInfor(comment);
     }
 
+    async deleteReply(agrs: {parentId: string;}) {
+        return await commentModel.deleteMany({parentId: agrs.parentId });
+    }
 }

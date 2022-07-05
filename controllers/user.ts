@@ -50,7 +50,7 @@ export class UserController {
             return utils.sendRespond(res, acessToken, 200, {...loginResult, status: 1})
 
         } catch (error) {
-            throw error
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -85,8 +85,7 @@ export class UserController {
             res.write(JSON.stringify({...user, status: 1}))
             res.end("\n")
         } catch (error) {
-            res.end("Error")
-            throw error
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -115,16 +114,16 @@ export class UserController {
             await utils.sendRespond(res, utils.getAccessToken(req), 201, admin)
 
         } catch (error) {
-            throw error
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
     updateProfile = async (req, res) => {
         try {
-
             const body: { name, address, phoneNumber } = await utils.getPostData(req)
+            const test = await utils.getPostData(req)
+            console.log(test)
             let currentUser = await utils.requestUser(req)
-
             let email = currentUser.email
             let user = await userService.updateUser({ email: email, data: body })
             let userToken = {
@@ -140,7 +139,7 @@ export class UserController {
             }
             utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -154,7 +153,7 @@ export class UserController {
             } else await utils.sendRespond(res, utils.getAccessToken(req), 404, { message: "Đã xảy ra lỗi" })
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -164,7 +163,7 @@ export class UserController {
             const users = await userService.getAllUsers();
             utils.sendRespond(res, utils.getAccessToken(req), 200, users)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -179,7 +178,7 @@ export class UserController {
             }
             utils.sendRespond(res, utils.getAccessToken(req), 200, user)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
 
     };
@@ -206,8 +205,12 @@ export class UserController {
             }
             utils.sendRespond(res,utils.generateAccessToken(userToken), 201, user)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
+    }
+
+    logout = async (req, res) => {
+        utils.responseUnauthor(res, 200, {message: "Đăng xuất thành công"})
     }
 
 }

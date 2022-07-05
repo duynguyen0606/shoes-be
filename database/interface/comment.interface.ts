@@ -6,4 +6,5 @@ export interface ICommentDb {
     createComment(agrs: IComment): Promise<IComment>;
     updateComment(agrs: { _id: string, data: any }): Promise<IComment>;
     deleteComment(agrs: { _id: string }): Promise<IComment>;
+    deleteReply(args: {parentId: string});
 }

@@ -14,17 +14,16 @@ const headers = {
 export class Utils {
 
     getPostData = async (req) => {
-        try {
-            
+        try{
             let body = "";
             await req.on("data", (chunk) => {
                 body += chunk.toString();
             })
-
             return JSON.parse(body)
-        } catch (error) {
-            console.log(error)
+        }catch(err){
+            console.log(err)
         }
+      
     }
 
     generateAccessToken = (currentUser: {

@@ -17,4 +17,7 @@ export class CommentService extends BasicService {
     async deleteComment(args: {_id: string}): Promise<IComment> {
         return this.commentDB.deleteComment(args)
     }
+    async deleteReply(args: {parentId: string}) {
+        return this.commentDB.deleteReply(args)
+    }
 }

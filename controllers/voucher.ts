@@ -11,7 +11,7 @@ export class VoucherController {
             const vouchers = await voucherService.getAllVouchers();
             utils.responseUnauthor(res, 200, vouchers)
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -34,7 +34,7 @@ export class VoucherController {
             return utils.responseUnauthor(res, 200, voucher)
 
         } catch (error) {
-            console.log(error)
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -54,7 +54,7 @@ export class VoucherController {
     
             return utils.sendRespond(res, utils.getAccessToken(req), 200, voucherCreated)
         } catch (error) {
-            
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -69,7 +69,7 @@ export class VoucherController {
             return utils.sendRespond(res, utils.getAccessToken(req), 200, voucherDeleted)
 
         } catch (error) {
-            
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 
@@ -83,7 +83,7 @@ export class VoucherController {
             return utils.sendRespond(res, utils.getAccessToken(req), 200, voucherUpdated)
 
         } catch (error) {
-            
+            utils.responseUnauthor(res,400,{error: error} )
         }
     };
 }
