@@ -31,8 +31,13 @@ export class ProductController {
 
     getAllProducts = async (req, res) => {
         try {
+            const checkLogin = req.headers['authorization']
             const products = await productService.findAllProducts();
-            utils.responseUnauthor(res, 200, products)
+
+            if (checkLogin === undefined ){
+                return utils.responseUnauthor(res, 200, products)
+            }
+            return utils.sendRespond(res, utils.getAccessToken(req), 200, products)
 
         } catch (error) {
             utils.responseUnauthor(res,400,{error: error} )
@@ -65,6 +70,7 @@ export class ProductController {
     getProduct = async (req, res) => {
         try {
             const body: { _id } = await utils.getPostData(req)
+            const checkLogin = req.headers['authorization']
 
             if (!mongoose.isValidObjectId(body._id)) {
                 return utils.sendRespond(res, utils.getAccessToken(req), 404, { message: "Không tìm thấy sản phẩm" })
@@ -75,10 +81,19 @@ export class ProductController {
                 product = await productService.findProductById({ _id: body._id })
             }
 
-            if (product._id === undefined) {
-                return utils.responseUnauthor(res, 404, { message: "Không tìm thấy sản phầm" })
+            if(checkLogin === undefined) {
+                if (product._id === undefined ) {
+                    return utils.responseUnauthor(res, 404, { message: "Không tìm thấy sản phầm" })
+                }
+                return utils.responseUnauthor(res, 200, product)
             }
-            return utils.responseUnauthor(res, 200, product)
+            else {
+                if (product._id === undefined ) {
+                    return utils.sendRespond(res,utils.getAccessToken(req), 404, { message: "Không tìm thấy sản phầm" })
+                }
+                return utils.sendRespond(res,utils.getAccessToken(req), 200, product)
+            }
+
 
         } catch (error) {
             utils.responseUnauthor(res,400,{error: error} )

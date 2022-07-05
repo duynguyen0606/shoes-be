@@ -8,8 +8,12 @@ const voucherService = new VoucherService()
 export class VoucherController {
     getAllVouchers = async (req, res) => {
         try {
+            const checkLogin = req.headers['authorization']
             const vouchers = await voucherService.getAllVouchers();
-            utils.responseUnauthor(res, 200, vouchers)
+            if (checkLogin === undefined ){
+               return utils.responseUnauthor(res, 200, vouchers)
+            }
+            else return utils.sendRespond(res, utils.getAccessToken(req), 200, vouchers)
         } catch (error) {
             utils.responseUnauthor(res,400,{error: error} )
         }
@@ -18,6 +22,7 @@ export class VoucherController {
     getVoucher = async (req, res) => {
         try {
             const body: {id} = await utils.getPostData(req)
+            const checkLogin = req.headers['authorization']
 
             if(!mongoose.isValidObjectId(body.id)) {
                 return utils.sendRespond(res, utils.getAccessToken(req),404, {message: "Không tìm thấy voucher"})
@@ -28,10 +33,19 @@ export class VoucherController {
                 voucher = await voucherService.getVoucherById({id: body.id})
             }
 
-            if (voucher._id === undefined) {
-                return utils.responseUnauthor(res, 404, {message: "Không tìm thấy voucher"})
+            if(checkLogin === undefined) {
+                if (voucher._id === undefined) {
+                    return utils.responseUnauthor(res, 404, {message: "Không tìm thấy voucher"})
+                }
+                return utils.responseUnauthor(res, 200, voucher)
             }
-            return utils.responseUnauthor(res, 200, voucher)
+            else {
+                if (voucher._id === undefined) {
+                    return utils.sendRespond(res,utils.getAccessToken(req), 404, {message: "Không tìm thấy voucher"})
+                }
+                return utils.sendRespond(res,utils.getAccessToken(req), 200, voucher)
+            }
+ 
 
         } catch (error) {
             utils.responseUnauthor(res,400,{error: error} )

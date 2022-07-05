@@ -9,12 +9,17 @@ export class CommentController {
     getAllComments = async (req, res) => {
         try {
             const body: {productId} = await utils.getPostData(req)
+            const checkLogin = req.headers['authorization']
             if(!mongoose.isValidObjectId(body.productId)) {
                 return utils.responseUnauthor(res, 404, {message: "Sản phẩm không tồn tại"})
             }
             const comments = await commentService.getAllComments({productId: body.productId})
-
-            return utils.responseUnauthor(res, 200, comments)
+            if (checkLogin === undefined) {
+                return utils.responseUnauthor(res, 200, comments)
+            }
+            else {
+                return utils.sendRespond(res, utils.getAccessToken(req), 200, comments)
+            }
 
         } catch (error) {
             utils.responseUnauthor(res,400,{error: error} )
@@ -108,8 +113,11 @@ export class CommentController {
     getAllReplyComments = async (req, res) => {
         try {
             const body: {parentId}  = await utils.getPostData(req)
+            const checkLogin = req.headers['authorization']
             const commentsReply = await commentService.getAllReplyByCommentIds({parentId: body.parentId})
-
+            if (checkLogin === undefined) {
+                return utils.responseUnauthor(res, 200, commentsReply)
+            }
             return utils.sendRespond(res, utils.getAccessToken(req), 200, commentsReply)  
         } catch (error) {
             utils.responseUnauthor(res,400,{error: error} )
