@@ -25,11 +25,11 @@ export class UserController {
             }
 
             if (!user) {
-                return utils.responseUnauthor(res, 404, {message: "Email or Password not match"})
+                return utils.responseUnauthor(res, 404, {message: "Email or Password not match", status: 0})
             }
 
             if (!bcrypt.compareSync(body.password, user.password)) {
-                return utils.responseUnauthor(res, 404, {message: "Email or Password not match"})
+                return utils.responseUnauthor(res, 404, {message: "Email or Password not match", status: 0})
 
             }
 
@@ -47,7 +47,7 @@ export class UserController {
                 acessToken,
                 userFormatted
             }
-            return utils.sendRespond(res, acessToken, 200, loginResult)
+            return utils.sendRespond(res, acessToken, 200, {...loginResult, status: 1})
 
         } catch (error) {
             throw error
@@ -63,7 +63,7 @@ export class UserController {
             if (emailExist._id !== undefined) {
                 res.setHeader("Content-Type", "application/json");
                 res.writeHead(404, headers);
-                res.write(JSON.stringify({message: "Email đã tồn tại trong hệ thống"}))
+                res.write(JSON.stringify({message: "Email đã tồn tại trong hệ thống", status: 0}))
                 res.end("\n")
                 return 
             }
@@ -82,7 +82,7 @@ export class UserController {
 
             res.setHeader("Content-Type", "application/json");
             res.writeHead(201, headers)
-            res.write(JSON.stringify(user))
+            res.write(JSON.stringify({...user, status: 1}))
             res.end("\n")
         } catch (error) {
             res.end("Error")
