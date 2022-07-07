@@ -22,7 +22,6 @@ export class Router {
             controller = funct[len - 1]
         }
 
-
         return {
             path: path,
             middlewares: middlewares,
@@ -58,7 +57,7 @@ export class Router {
     runRouter = (req, res) => {
         let method = req.method
         let path = req.url
-        console.log(method)
+        console.log(method, path)
         if (method === "GET") {
             this.processRoute(req,res, getRoutes)
         } else if (method === "POST") {
@@ -68,7 +67,10 @@ export class Router {
             res.setHeader("Access-Control-Allow-Credentials", "true");
             res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
             res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-            res.writeHead(200);
+            res.writeHead(200, {
+                "Set-Cookie": `mycookie=test`,
+                "Content-Type": `text/plain`
+            });
             res.end();
         }
     

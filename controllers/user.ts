@@ -99,32 +99,36 @@ export class UserController {
     };
 
     createAdmin = async (req, res) => {
-        // try {
+        try {
+            let data = "";
+            req.on("data", async (chunk) => {
+            data += chunk.toString()
 
-        //     const body: { name, email, password, address, phoneNumber, role } = await utils.getPostData(req);
-        //     let emailExist = await userService.findUserByEmail({ email: body.email })
+            const body: { name, email, password, address, phoneNumber, role } = JSON.parse(data)
+            let emailExist = await userService.findUserByEmail({ email: body.email })
 
-        //     if (emailExist._id !== undefined) {
-        //         return await utils.sendRespond(res, utils.getAccessToken(req), 404, { message: "Email đã tồn tại trong hệ thống" })
-        //     }
+            if (emailExist._id !== undefined) {
+                return await utils.sendRespond(res, utils.getAccessToken(req), 404, { message: "Email đã tồn tại trong hệ thống" })
+            }
 
-        //     const password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(BCRYPT_SALT))
+            const password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(BCRYPT_SALT))
 
-        //     const admin = await userService.createUser({
-        //         _id: undefined,
-        //         email: body.email,
-        //         password: password,
-        //         name: body.name,
-        //         address: body.address,
-        //         phoneNumber: body.phoneNumber,
-        //         role: Role.admin
-        //     })
+            const admin = await userService.createUser({
+                _id: undefined,
+                email: body.email,
+                password: password,
+                name: body.name,
+                address: body.address,
+                phoneNumber: body.phoneNumber,
+                role: Role.admin
+            })
 
-        //     await utils.sendRespond(res, utils.getAccessToken(req), 201, admin)
+            await utils.sendRespond(res, utils.getAccessToken(req), 201, admin)
+            })
 
-        // } catch (error) {
-        //     throw error
-        // }
+        } catch (error) {
+            throw error
+        }
     };
 
     updateProfile = async (req, res) => {
