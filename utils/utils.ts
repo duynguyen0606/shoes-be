@@ -13,9 +13,9 @@ const headers = {
 
 export class Utils {
 
-    getPostData = (req) => {
+    getPostData = async (req) => {
             let body = "";
-            req.on("data", (chunk) => {
+            await req.on("data", (chunk) => {
                 body += chunk.toString();
             })
             req.on("end", function(){
