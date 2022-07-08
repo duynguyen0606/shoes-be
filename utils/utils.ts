@@ -7,22 +7,11 @@ import { TOKEN_SECRET } from "./config";
 const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "*",
-    "Access-Control-Max-Age": 2592000, // 30 days
+    "Access-Control-Max-Age": 30*60*60*24, // 30 days
     /** add other headers as per requirement */
 };
 
 export class Utils {
-
-    getPostData = async (req) => {
-            let body = "";
-            await req.on("data", (chunk) => {
-                body += chunk.toString();
-            })
-            req.on("end", function(){
-                return JSON.parse(body)
-            })
-      
-    }
 
     generateAccessToken = (currentUser: {
         id: ObjectId | undefined,
