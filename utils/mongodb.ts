@@ -2,26 +2,25 @@ import mongoose from "mongoose";
 import { ProductService } from "../services/productService";
 import { DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PWD } from "./config";
 
-
 const DB_URL = `mongodb://${DB_HOST}:${DB_PORT}`;
-
+const newProduct = new ProductService();
 const connectDatabase = (callback?: () => void) => {
   mongoose
     .connect(DB_URL, {
-      auth:{
+      auth: {
         password: DB_PWD,
         username: DB_USER,
       },
       dbName: DB_NAME,
-      authSource: DB_NAME
+      authSource: DB_NAME,
     })
     .then(() => {
       console.log("Connect database successfully!");
       if (callback) callback();
     })
-    .catch((err) => console.error("MongoDB initial connection error: ", err));
-
-  mongoose.connection.on("error", (err) => {
+    .catch(err => console.error("MongoDB initial connection error: ", err));
+    
+  mongoose.connection.on("error", err => {
     console.log("MongoDB error: ", err);
   });
 };
