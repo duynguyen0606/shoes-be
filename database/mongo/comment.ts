@@ -26,7 +26,8 @@ const schema = new Schema<ICommentDocument, ICommentSchema>({
     },
     type: {
         type: 'number',
-        required: true
+        required: true,
+        default: 0
     },
     parentId:{
         type: 'string',
@@ -43,7 +44,7 @@ export const commentModel = model(commentTableName, schema);
 
 export class CommentDb implements ICommentDb {
     async getAllComments(agrs: {productId: string}): Promise<IComment[]> {
-       return await commentModel.find({productId: agrs.productId, type: TypeComment.feedback });
+       return await commentModel.find({productId: agrs.productId, type: TypeComment.feedback }).populate('owner').exec();
     }
     async getAllReplyByCommentIds(agrs:{ parentId: string }): Promise<IComment[]> {
        return await commentModel.find({ parentId: agrs.parentId, type: TypeComment.reply });

@@ -15,7 +15,8 @@ router.post('/user/update-profile', controllers.updateProfile)
 router.post('/login', controllers.login)
 router.post('/register', controllers.createUser)
 router.post('/user/change-password', controllers.changePassword)
-router.get('/user/logout', controllers.logout)
+router.get('/user/logout',controllers.logout)
+router.post('/user/checkLogin', controllers.checkLogin)
 
 export default router
 

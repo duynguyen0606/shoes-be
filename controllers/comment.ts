@@ -12,17 +12,11 @@ export class CommentController {
             req.on("data", async (chunk) => {
                 data += chunk.toString();
                 const body: { productId } = JSON.parse(data)
-                const checkLogin = req.headers['authorization']
                 if (!mongoose.isValidObjectId(body.productId)) {
                     return utils.responseUnauthor(res, 404, { message: "Sản phẩm không tồn tại" })
                 }
                 const comments = await commentService.getAllComments({ productId: body.productId })
-                if (checkLogin === undefined) {
-                    return utils.responseUnauthor(res, 200, comments)
-                }
-                else {
-                    return utils.sendRespond(res, utils.getAccessToken(req), 200, comments)
-                }
+                return utils.responseUnauthor(res, 200, comments)
             })
 
         } catch (error) {
@@ -36,36 +30,13 @@ export class CommentController {
             let data = "";
             req.on("data", async (chunk) => {
                 data += chunk.toString()
-                const body: { productId, content, type, parentId, amountReply } = JSON.parse(data)
-
-                const owner = await utils.requestUser(req)
-                const ownerFormatted = {
-                    _id: owner.id,
-                    email: owner.email,
-                    password: "",
-                    name: owner.name,
-                    address: owner.address,
-                    phoneNumber: owner.phoneNumber,
-                    role: owner.role
-                }
-    
-                let comment = {
-                    _id: undefined,
-                    content: body.content,
-                    owner: ownerFormatted,
-                    productId: body.productId,
-                    type: body.type,
-                    parentId: mongoose.isValidObjectId(body.productId) ? body.parentId : "",
-                    amountReply: body.amountReply
-                }
-    
-    
-                const newComment = await commentService.createComment(comment)
+                const body = JSON.parse(data)
+                const newComment = await commentService.createComment(body)
     
                 if (newComment._id === undefined) {
                     utils.responseUnauthor(res, 400, { message: "Bình luận không thành công" })
                 }
-                return utils.sendRespond(res, utils.getAccessToken(req), 200, newComment)
+                return utils.responseUnauthor(res, 200, newComment)
             })
 
         } catch (error) {

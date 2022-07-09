@@ -6,7 +6,7 @@ const controllers = new CommentController()
 const router = new Router()
 const required = new Required()
 
-router.get('/comments', controllers.getAllComments)
+router.post('/comments', controllers.getAllComments)
 router.post('/comment/post', controllers.createComment)
 router.post('/comment/edit', controllers.updateComment)
 router.post('/comment/delete', controllers.deleteComment)

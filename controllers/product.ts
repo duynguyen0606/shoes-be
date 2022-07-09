@@ -9,7 +9,7 @@ const utils = new Utils()
 export class ProductController {
 
     createProduct = async (req, res) => {
-        try {
+         try {
             let data = "";
             req.on("data", async (chunk) => {
                 data += chunk.toString();

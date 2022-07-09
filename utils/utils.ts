@@ -4,7 +4,7 @@ import { Role } from "../models/user";
 import jwtDecode from "jwt-decode";
 import { TOKEN_SECRET } from "./config";
 
-const headers = {
+export const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "*",
     "Access-Control-Max-Age": 30*60*60*24, // 30 days

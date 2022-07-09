@@ -4,15 +4,11 @@ import bcrypt from "bcryptjs"
 import { Role } from "../models/user"
 import { BCRYPT_SALT } from "../utils/config"
 import jwtDecode from "jwt-decode"
+import { headers } from "../utils/utils"
+
 
 const utils = new Utils()
 const userService = new UserService()
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
-    "Access-Control-Max-Age": 2592000, // 30 days
-    /** add other headers as per requirement */
-};
 
 export class UserController {
 
@@ -45,17 +41,17 @@ export class UserController {
                     role: user.role
                 }
     
-                let acessToken = utils.generateAccessToken(userFormatted)
+                let accessToken = utils.generateAccessToken(userFormatted)
                 const loginResult = {
-                    acessToken,
+                    accessToken,
                     userFormatted
                 }
-                return utils.sendRespond(res, acessToken, 200, {...loginResult, status: 1})
+                return utils.sendRespond(res, accessToken, 200, {...loginResult, status: 1})
 
             })
 
         } catch (error) {
-            throw error
+            utils.responseUnauthor(res, 400, { error: error })
         }
     };
 
@@ -89,12 +85,18 @@ export class UserController {
     
                 res.setHeader("Content-Type", "application/json");
                 res.writeHead(201, headers)
-                res.write(JSON.stringify({...user, status: 1}))
+                res.write(JSON.stringify({user, accessToken: utils.generateAccessToken({
+                    id: user._id,
+                    email: user.email,
+                    name: user.name,
+                    address: user.address?? '',
+                    phoneNumber: user.phoneNumber?? ' ',
+                    role: Role.client
+                }) ,status: 1}))
                 res.end("\n")
             })
         } catch (error) {
-            res.end("Error")
-            throw error
+            utils.responseUnauthor(res, 400, { error: error })
         }
     };
 
@@ -127,7 +129,7 @@ export class UserController {
             })
 
         } catch (error) {
-            throw error
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -156,7 +158,7 @@ export class UserController {
 
             })
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -174,7 +176,7 @@ export class UserController {
             })
 
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -184,7 +186,7 @@ export class UserController {
             const users = await userService.getAllUsers();
             utils.sendRespond(res, utils.getAccessToken(req), 200, users)
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -203,7 +205,7 @@ export class UserController {
 
             })
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
 
     };
@@ -235,13 +237,23 @@ export class UserController {
 
             })
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     }
 
     logout = async (req, res) => { 
         utils.responseUnauthor(res, 200, {message: "Đăng xuất thành công"})
-    }
+    };
+
+    checkLogin = async (req, res) => {
+        try {
+            const token = req.headers['authorization'].split(" ")[1]
+            const body: { currentUser, iat, exp } = jwtDecode(token)
+            utils.sendRespond(res, utils.getAccessToken(req), 200, {currentUser: body.currentUser})
+        } catch (error) {
+            utils.responseUnauthor(res, 400, {error: error})
+        }
+    }  
 
 }
 
