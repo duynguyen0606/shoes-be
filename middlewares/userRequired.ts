@@ -53,14 +53,13 @@ export class Required {
                 message: "Hãy đăng nhập để  thực hiện chức năng này",
                 status: 403
             }
-            console.log(req.headers);
-            if (req.headers['authorization'] === undefined) {
+            if (req.headers['authorization'] === undefined || req.headers['authorization'] === 'Bearer null') {
                 return utils.responseUnauthor(res, 401, {
                     message: "Hãy đăng nhập để  thực hiện chức năng này",
-                    status: 401
+                    status: 401 
                 })
             }
-    
+     
     
             const token = req.headers['authorization'].split(" ")[1]
             const body: { currentUser, iat, exp } = jwtDecode(token)

@@ -89,7 +89,14 @@ export class UserController {
     
                 res.setHeader("Content-Type", "application/json");
                 res.writeHead(201, headers)
-                res.write(JSON.stringify({...user, status: 1}))
+                res.write(JSON.stringify({user, accessToken: utils.generateAccessToken({
+                    id: user._id,
+                    email: user.email,
+                    name: user.name,
+                    address: user.address?? '',
+                    phoneNumber: user.phoneNumber?? ' ',
+                    role: Role.client
+                }) ,status: 1}))
                 res.end("\n")
             })
         } catch (error) {
