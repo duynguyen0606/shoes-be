@@ -36,35 +36,50 @@ export class Required {
         return utils.sendRespond(res, utils.getAccessToken(req), 403, err)
     }
 
-    authenticate = async (req, res, next) => {
-
-        let err = {
-            message: "Hãy đăng nhập để  thực hiện chức năng này",
-            status: 403
-        }
-
-        if (req.headers['authorization'] === undefined) {
-            return utils.responseUnauthor(res, 401, {
+    authenticate =  (req, res, next) => {
+        if(req.method === "OPTIONS"){
+            console.log("abc")
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Allow-Credentials", "true");
+            res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+            res.setHeader("Access-Control-Allow-Headers", "*");
+            res.writeHead(200, {
+                "Set-Cookie": `mycookie=test`,
+                "Content-Type": `text/plain`
+            });
+             return res.end();
+        }else if(req.method == "POST" || req.method == "GET"){
+            let err = {
                 message: "Hãy đăng nhập để  thực hiện chức năng này",
-                status: 401
-            })
-        }
-
-
-        const token = req.headers['authorization'].split(" ")[1]
-        const body: { currentUser, iat, exp } = jwtDecode(token)
-
-        userService.findUserByEmail({ email: body.currentUser.email }).then((result) => {
-            if (result._id === undefined) {
-                utils.responseUnauthor(res, 401, err)
+                status: 403
             }
-        })
-
-        if (Date.now() <= body.exp * 1000) {
-            return next(req, res)
-        } else {
-            return utils.responseUnauthor(res, 403, err)
+            console.log(req.headers);
+            if (req.headers['authorization'] === undefined) {
+                return utils.responseUnauthor(res, 401, {
+                    message: "Hãy đăng nhập để  thực hiện chức năng này",
+                    status: 401
+                })
+            }
+    
+    
+            const token = req.headers['authorization'].split(" ")[1]
+            const body: { currentUser, iat, exp } = jwtDecode(token)
+            console.log(body)
+            userService.findUserByEmail({ email: body.currentUser.email }).then((result) => {
+                if (result._id === undefined) {
+                    utils.responseUnauthor(res, 401, err)
+                }
+            })
+    
+            if (Date.now() <= body.exp * 1000) {
+                return next(req, res)
+            } else {
+                return utils.responseUnauthor(res, 403, err)
+            }
         }
+       
+        
+        
 
     }
 }

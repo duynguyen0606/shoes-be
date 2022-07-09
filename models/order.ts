@@ -16,6 +16,8 @@ export enum OrderStatus {
     pending,
     cancelled,
     success,
+    delivering
+
 }
  export class OrderInfo {
     _id?: string | undefined;

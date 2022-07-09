@@ -34,7 +34,7 @@ const server = http.createServer(async (req, res) => {
         router.runRouter(req, res)
     }
     else {
-        await required.authenticate(req, res, router.runRouter)
+        required.authenticate(req, res, router.runRouter)
     }
 
 })

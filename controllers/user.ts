@@ -45,12 +45,12 @@ export class UserController {
                     role: user.role
                 }
     
-                let acessToken = utils.generateAccessToken(userFormatted)
+                let accessToken = utils.generateAccessToken(userFormatted)
                 const loginResult = {
-                    acessToken,
+                    accessToken,
                     userFormatted
                 }
-                return utils.sendRespond(res, acessToken, 200, {...loginResult, status: 1})
+                return utils.sendRespond(res, accessToken, 200, {...loginResult, status: 1})
 
             })
 
@@ -241,7 +241,13 @@ export class UserController {
 
     logout = async (req, res) => { 
         utils.responseUnauthor(res, 200, {message: "Đăng xuất thành công"})
-    }
+    };
+
+    checkLogin = async (req, res) => {
+        const token = req.headers['authorization'].split(" ")[1]
+        const body: { currentUser, iat, exp } = jwtDecode(token)
+        utils.sendRespond(res, utils.getAccessToken(req), 200, {currentUser: body.currentUser})
+    }  
 
 }
 

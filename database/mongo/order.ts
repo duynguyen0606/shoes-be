@@ -35,7 +35,7 @@ export const orderModel = model(orderTable, orderSchema);
 
 export class OrderDb implements IOrderDb {
     async getAllOrders(): Promise<IOrder[]> {
-        return await orderModel.find();
+        return await orderModel.find().populate('userId').populate('products').exec();
     }
     async getOrderById(args: { id: string; }): Promise<IOrder> {
         const order = await orderModel.findById(args.id);
