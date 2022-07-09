@@ -4,15 +4,11 @@ import bcrypt from "bcryptjs"
 import { Role } from "../models/user"
 import { BCRYPT_SALT } from "../utils/config"
 import jwtDecode from "jwt-decode"
+import { headers } from "../utils/utils"
+
 
 const utils = new Utils()
 const userService = new UserService()
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
-    "Access-Control-Max-Age": 2592000, // 30 days
-    /** add other headers as per requirement */
-};
 
 export class UserController {
 
@@ -55,7 +51,7 @@ export class UserController {
             })
 
         } catch (error) {
-            throw error
+            utils.responseUnauthor(res, 400, { error: error })
         }
     };
 
@@ -100,8 +96,7 @@ export class UserController {
                 res.end("\n")
             })
         } catch (error) {
-            res.end("Error")
-            throw error
+            utils.responseUnauthor(res, 400, { error: error })
         }
     };
 
@@ -134,7 +129,7 @@ export class UserController {
             })
 
         } catch (error) {
-            throw error
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -163,7 +158,7 @@ export class UserController {
 
             })
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -181,7 +176,7 @@ export class UserController {
             })
 
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -191,7 +186,7 @@ export class UserController {
             const users = await userService.getAllUsers();
             utils.sendRespond(res, utils.getAccessToken(req), 200, users)
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     };
 
@@ -210,7 +205,7 @@ export class UserController {
 
             })
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
 
     };
@@ -242,7 +237,7 @@ export class UserController {
 
             })
         } catch (error) {
-            console.log(error)
+            utils.sendRespond(res, utils.getAccessToken(req), 400, {error: error})
         }
     }
 
@@ -251,9 +246,13 @@ export class UserController {
     };
 
     checkLogin = async (req, res) => {
-        const token = req.headers['authorization'].split(" ")[1]
-        const body: { currentUser, iat, exp } = jwtDecode(token)
-        utils.sendRespond(res, utils.getAccessToken(req), 200, {currentUser: body.currentUser})
+        try {
+            const token = req.headers['authorization'].split(" ")[1]
+            const body: { currentUser, iat, exp } = jwtDecode(token)
+            utils.sendRespond(res, utils.getAccessToken(req), 200, {currentUser: body.currentUser})
+        } catch (error) {
+            utils.responseUnauthor(res, 400, {error: error})
+        }
     }  
 
 }

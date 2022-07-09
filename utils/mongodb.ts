@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { ProductService } from "../services/productService";
 import { DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PWD } from "./config";
-
+import { UserDb } from "../database/mongo/user";
 
 const DB_URL = `mongodb://${DB_HOST}:${DB_PORT}`;
+const userDB = new UserDb()
 
 const connectDatabase = (callback?: () => void) => {
   mongoose
@@ -24,6 +24,7 @@ const connectDatabase = (callback?: () => void) => {
   mongoose.connection.on("error", (err) => {
     console.log("MongoDB error: ", err);
   });
+
 };
 
 export default connectDatabase;
