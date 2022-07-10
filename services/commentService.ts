@@ -8,7 +8,7 @@ export class CommentService extends BasicService {
     async getAllReplyByCommentIds(args: { parentId: string }): Promise<IComment[]> {
         return this.commentDB.getAllReplyByCommentIds(args);
     }
-    async createComment(args: IComment): Promise<IComment> {
+    async createComment(args: any): Promise<IComment> {
         return this.commentDB.createComment(args);
     }
     async updateComment(args: {_id: string, data: any}): Promise<IComment> {

@@ -1,0 +1,44 @@
+
+version: "3"
+services:
+  mongodb:
+    image: mongo:3.6.8
+    restart: unless-stopped
+    networks:
+      - t20
+    env_file: ./.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $DB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $DB_PWD
+    ports:
+      - '27017:27017'
+    volumes:
+      - db:/data/db
+    logging:
+      driver: none
+
+  app:
+    depends_on:
+      - mongodb
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=mongodb
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PWD
+      - DB_NAME=$DB_NAME
+      - DB_PORT=$DB_PORT
+    stdin_open: true
+    tty: true
+    networks: 
+      - t20
+volumes:
+  db:
+networks:
+  t20:
+    driver: bridge
