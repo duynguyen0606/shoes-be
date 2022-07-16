@@ -171,7 +171,7 @@ export class UserController {
       let data = "";
       req.on("data", async chunk => {
         data += chunk.toString();
-        const body: { name; address; phoneNumber } = JSON.parse(data);
+        const body: { address; phoneNumber } = JSON.parse(data);
         let currentUser = await utils.requestUser(req);
 
         let email = currentUser.email;
@@ -246,7 +246,7 @@ export class UserController {
     }
   };
 
-  changePassword = async (req, res) => {
+  changePassword = async (req, res) => {     
     try {
       let data = "";
       req.on("data", async chunk => {

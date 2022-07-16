@@ -69,17 +69,15 @@ export class OrderController {
       let data = "";
       req.on("data", async chunk => {
         data += chunk.toString();
-        const body: { products; totalPrice; status } = JSON.parse(data);
+        const body: { products; totalPrice; status; phoneNumber; address } =
+          JSON.parse(data);
         const currentUser = await utils.requestUser(req);
 
         let order = {
+          ...body,
           _id: undefined,
-          products: body.products,
-          totalPrice: body.totalPrice,
           userId: currentUser._id,
-          address: currentUser.address,
-          phoneNumber: currentUser.phoneNumber,
-          status: body.status,
+          name: currentUser.name,
         };
         let orderCreated = await orderService.createOrder({ data: order });
         if (orderCreated._id === undefined) {
@@ -105,9 +103,9 @@ export class OrderController {
       req.on("data", async chunk => {
         data += chunk.toString();
 
-        const body: { id; data } = JSON.parse(data);
+        const body: { _id: any; data } = JSON.parse(data);
         const orderUpdated = await orderService.updateOrder({
-          id: body.id,
+          id: body._id,
           data: body.data,
         });
         if (orderUpdated._id === undefined) {
