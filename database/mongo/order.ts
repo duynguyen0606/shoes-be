@@ -28,7 +28,8 @@ const orderSchema = new Schema<IOrderDocument, IOrderSchema>({
     address: String,
     phoneNumber: String,
     status: Number,
-    size: [Number]
+    size: [Number],
+    amount: [Number],
 }, { 
     timestamps: true,
 });
