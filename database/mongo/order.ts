@@ -2,7 +2,7 @@ import mongoose, { model, Model, Schema } from "mongoose";
 import { IOrder, OrderInfo, OrderStatus } from "../../models/order";
 import { IOrderDb } from "../interface/order.interface";
 import { productTable } from "./product";
-import { userTable } from "./user";
+import { UserModel, userTable } from "./user";
 
 export interface IOrderDocument extends IOrder, Document {
     _id: any
@@ -27,8 +27,9 @@ const orderSchema = new Schema<IOrderDocument, IOrderSchema>({
     },
     address: String,
     phoneNumber: String,
-    status: Number
-}, {
+    status: Number,
+    size: [Number]
+}, { 
     timestamps: true,
 });
 export const orderModel = model(orderTable, orderSchema);
@@ -41,6 +42,9 @@ export class OrderDb implements IOrderDb {
         const order = await orderModel.findById(args.id);
         return new OrderInfo(order);
     }
+    async getOrderByIdUser(args: { id: string }): Promise<IOrder[]> {
+        return await orderModel.find({userId: args.id}).populate('userId').populate('products').exec();
+    }
     async getOrderByStatus(args: { status: OrderStatus }): Promise<IOrder[]> {
         return await orderModel.find({status: args.status});
     }
@@ -48,6 +52,11 @@ export class OrderDb implements IOrderDb {
         return new OrderInfo(await orderModel.findByIdAndUpdate(args.id, args.data, { new: true }))
     }
     async createOrder(args: { data: IOrder; }): Promise<IOrder> {
+        const infoUser = {
+            address: args.data.address,
+            phoneNumber: args.data.phoneNumber
+        };
+        await UserModel.findByIdAndUpdate(args.data.userId, {...infoUser});
         return new OrderInfo(await orderModel.create(args.data));
     }
     

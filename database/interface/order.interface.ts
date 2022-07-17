@@ -6,4 +6,5 @@ export interface IOrderDb {
     getOrderByStatus(args: {status: OrderStatus}): Promise<IOrder[]>;
     updateOrder(args: {id: string, data: any}): Promise<IOrder>;
     createOrder(args: {data: any}): Promise<IOrder>;
+    getOrderByIdUser(args: {id: string}): Promise<IOrder[]>;
 } 

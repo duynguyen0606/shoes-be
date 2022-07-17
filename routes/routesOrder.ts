@@ -8,6 +8,7 @@ const controllers = new OrderController()
 const required = new Required()
 
 router.get('/order/list', controllers.getAllOrders)
+router.post('/orderByUserId', controllers.getOrderByIdUser)
 router.post('/order/detail', controllers.getOrder)
 router.post('/order/create-order', controllers.createOrder)
 router.post('/order/status', controllers.getOrderbyStatus)

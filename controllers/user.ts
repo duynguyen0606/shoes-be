@@ -251,18 +251,22 @@ export class UserController {
       let data = "";
       req.on("data", async chunk => {
         data += chunk.toString();
-        const body: { password } = JSON.parse(data);
+        const body: { passwordOld, passwordNew } = JSON.parse(data);
 
         let currentUser = await utils.requestUser(req);
 
         let email = currentUser.email;
-        const password = bcrypt.hashSync(
-          body.password,
+        const passwordOld = bcrypt.hashSync(
+          body.passwordOld,
           bcrypt.genSaltSync(BCRYPT_SALT)
         );
+        const passwordNew = bcrypt.hashSync(
+          body.passwordNew,
+          bcrypt.genSaltSync(BCRYPT_SALT)
+        )
         let user = await userService.updateUser({
           email: email,
-          data: { password: password },
+          data: { password: passwordNew },
         });
         let userToken = {
           id: user._id,
@@ -278,6 +282,7 @@ export class UserController {
           });
         }
         utils.sendRespond(res, utils.generateAccessToken(userToken), 201, user);
+        
       });
     } catch (error) {
       utils.sendRespond(res, utils.getAccessToken(req), 400, { error: error });

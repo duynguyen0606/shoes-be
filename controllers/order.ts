@@ -16,6 +16,20 @@ export class OrderController {
     }
   };
 
+  getOrderByIdUser = async (req, res) => {
+    try {
+      let data = "";
+      req.on("data", async chunk => {
+        data += chunk.toString();
+        const body: { id } = JSON.parse(data);
+        const orders = await orderService.getOrderByIdUser({ id: body.id});
+        utils.sendRespond(res, utils.getAccessToken(req), 200, orders);
+      })
+    } catch (error) {
+      utils.responseUnauthor(res, 400, { error: error });
+    }
+  };
+
   getOrder = async (req, res) => {
     try {
       let data = "";
@@ -69,14 +83,14 @@ export class OrderController {
       let data = "";
       req.on("data", async chunk => {
         data += chunk.toString();
-        const body: { products; totalPrice; status; phoneNumber; address } =
+        const body: { products; totalPrice; status; phoneNumber; address; userId } =
           JSON.parse(data);
         const currentUser = await utils.requestUser(req);
 
         let order = {
           ...body,
           _id: undefined,
-          userId: currentUser._id,
+          userId: currentUser.id,
           name: currentUser.name,
         };
         let orderCreated = await orderService.createOrder({ data: order });

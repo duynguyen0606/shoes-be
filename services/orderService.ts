@@ -16,4 +16,7 @@ export class OrderService extends BasicService {
   async createOrder(args: { data: any }): Promise<IOrder> {
     return this.orderDB.createOrder(args);
   }
+  async getOrderByIdUser(args: { id: string }): Promise<IOrder[]> {
+    return this.orderDB.getOrderByIdUser(args);
+  }
 }
