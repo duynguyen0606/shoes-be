@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PWD } from "./config";
 import { UserDb } from "../database/mongo/user";
 
-const DB_URL = `mongodb://${DB_HOST}:${DB_PORT}`;
+const DB_URL = `mongodb+srv://db-mongodb-nyc3-94499-34557a4d.mongo.ondigitalocean.com`;
 const userDB = new UserDb();
 
 const connectDatabase = (callback?: () => void) => {
