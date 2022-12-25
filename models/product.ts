@@ -5,10 +5,18 @@ export interface IProduct {
     color?: string;
     size?: IProductSize[];
     linkImg: string[];
+    category?: number[],
 }
 export interface IProductSize{
     size: number;
     amount: number;
+}
+export enum Category {
+    MALE,
+    FEMALE,
+    SPORT,
+    LEATHER,
+    RUNNING
 }
 
 export class ProductInfor {
@@ -18,6 +26,7 @@ export class ProductInfor {
     color?: string;
     size?: IProductSize[];
     linkImg: string[];
+    category?: number[];
     constructor(args?: any){
         this._id = args?._id?? undefined;
         this.name = args?.name?? "";
@@ -25,5 +34,6 @@ export class ProductInfor {
         this.size = args?.size?? [];
         this.price = args?.price?? 0;
         this.linkImg = args?.linkImg?? [];
+        this.category = args?.category?? [];
     }
 }

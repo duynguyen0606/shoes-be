@@ -1,7 +1,7 @@
 import mongoose, { model, Model, Schema } from "mongoose";
-import { IOrder, OrderInfo, OrderStatus } from "../../models/order";
+import { IOrder, OrderInfo, OrderStatus, PayMentMethod } from "../../models/order";
 import { IOrderDb } from "../interface/order.interface";
-import { productTable } from "./product";
+import { ProductModel, productTable } from "./product";
 import { UserModel, userTable } from "./user";
 
 export interface IOrderDocument extends IOrder, Document {
@@ -30,6 +30,10 @@ const orderSchema = new Schema<IOrderDocument, IOrderSchema>({
     status: Number,
     size: [Number],
     amount: [Number],
+    paymentMethod: {
+        type: Number,
+        default: PayMentMethod.OFFLINE
+    }
 }, { 
     timestamps: true,
 });
@@ -60,5 +64,4 @@ export class OrderDb implements IOrderDb {
         await UserModel.findByIdAndUpdate(args.data.userId, {...infoUser});
         return new OrderInfo(await orderModel.create(args.data));
     }
-    
 }

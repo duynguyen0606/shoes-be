@@ -5,6 +5,7 @@ import { Role } from "../models/user";
 import { BCRYPT_SALT } from "../utils/config";
 import jwtDecode from "jwt-decode";
 import { headers } from "../utils/utils";
+import { UserModel } from "../database/mongo/user";
 
 const utils = new Utils();
 const userService = new UserService();
@@ -171,9 +172,8 @@ export class UserController {
       let data = "";
       req.on("data", async chunk => {
         data += chunk.toString();
-        const body: { address; phoneNumber } = JSON.parse(data);
+        const body: { address, phoneNumber, name } = JSON.parse(data);
         let currentUser = await utils.requestUser(req);
-
         let email = currentUser.email;
         let user = await userService.updateUser({ email: email, data: body });
         let userToken = {
@@ -184,12 +184,13 @@ export class UserController {
           phoneNumber: user.phoneNumber,
           role: user.role,
         };
+        console.log(user)
         if (user._id === undefined) {
           return utils.sendRespond(res, utils.getAccessToken(req), 404, {
             message: "Đã xảy ra lỗi",
           });
         }
-        utils.sendRespond(res, utils.generateAccessToken(userToken), 201, user);
+        return utils.sendRespond(res, utils.generateAccessToken(userToken), 201, user);
       });
     } catch (error) {
       utils.sendRespond(res, utils.getAccessToken(req), 400, { error: error });
@@ -297,8 +298,9 @@ export class UserController {
     try {
       const token = req.headers["authorization"].split(" ")[1];
       const body: { currentUser; iat; exp } = jwtDecode(token);
+      const dataUser = await UserModel.findById(body.currentUser.id)
       utils.sendRespond(res, utils.getAccessToken(req), 200, {
-        currentUser: body.currentUser,
+        currentUser: dataUser,
       });
     } catch (error) {
       utils.responseUnauthor(res, 400, { error: error });

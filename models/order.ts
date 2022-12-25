@@ -12,6 +12,12 @@ export interface IOrder {
     updatedAt?: string;
     size: number[];
     amount: number[];
+    paymentMethod: number
+}
+
+export enum PayMentMethod {
+    ONLINE,
+    OFFLINE
 }
 
 export enum OrderStatus {
@@ -33,6 +39,7 @@ export enum OrderStatus {
     updatedAt?: string;
     size: number[];
     amount: number[];
+    paymentMethod: number;
     constructor(arg?: any){
         this._id = arg?._id?? undefined;
         this.products = arg?.products?? [];
@@ -45,5 +52,6 @@ export enum OrderStatus {
         this.updatedAt = arg?.updatedAt ?? "";
         this.size = arg?.size ?? [];
         this.amount = arg?.amount ?? [];
+        this.paymentMethod = arg?.paymentMethod?? PayMentMethod.OFFLINE;
     }
 }

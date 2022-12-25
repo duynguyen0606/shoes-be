@@ -66,7 +66,6 @@ export class Required {
 
       const token = req.headers["authorization"].split(" ")[1];
       const body: { currentUser; iat; exp } = jwtDecode(token);
-      console.log(body);
       userService
         .findUserByEmail({ email: body.currentUser.email })
         .then(result => {

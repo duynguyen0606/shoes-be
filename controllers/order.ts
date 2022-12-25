@@ -83,7 +83,7 @@ export class OrderController {
       let data = "";
       req.on("data", async chunk => {
         data += chunk.toString();
-        const body: { products; totalPrice; status; phoneNumber; address; userId } =
+        const body: { products; totalPrice; status; phoneNumber; address; userId, paymentMethod } =
           JSON.parse(data);
         const currentUser = await utils.requestUser(req);
 

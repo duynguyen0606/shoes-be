@@ -31,6 +31,9 @@ const ProductSchema = new Schema<IProductDocument, IProductSchema>({
         type: ["string"],
         required: true,
         trim: true,
+    },
+    category: {
+        type: ["number"],
     }
 });
 

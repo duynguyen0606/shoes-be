@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ProductModel } from "../database/mongo/product";
 import { ProductService } from "../services/productService";
 import { Utils } from "../utils/utils";
 
@@ -135,5 +136,28 @@ export class ProductController {
             utils.responseUnauthor(res, 400, { error: error })
         }
     };
+
+    getProductByFilter = async (req, res) => {
+        try {
+            let data = "";
+            req.on("data", async (chunk) => {
+                data += chunk.toString()
+                const body: { category } = JSON.parse(data)
+                let product = await ProductModel.find({
+                    category: { $in: body.category }
+                })
+               
+                if (!product.length) {
+                    return utils.sendRespond(res, utils.getAccessToken(req), 404, { message: "Không tìm thấy sản phầm" })
+                }
+                return utils.sendRespond(res, utils.getAccessToken(req), 200, product)
+            })
+
+
+        } catch (error) {
+            utils.responseUnauthor(res, 400, { error: error })
+        }
+    };
+
 }
 
